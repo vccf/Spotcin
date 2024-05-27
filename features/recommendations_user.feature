@@ -24,14 +24,14 @@ Cenário: Histórico de recomendações (GUI)
 Given a usuária “Victória” está logada 
 And estou na página “Recomendações”
 When seleciono a opção “Histórico de recomendações”
-Then sou redirecionado para a página “Histórico de recomendações” com o histórico de recomendações (as recomendações atuais e recomendações antigas) 
+Then sou redirecionada para a página “Histórico de recomendações” com o histórico de recomendações (as recomendações atuais e recomendações antigas) 
 And posso visualizar 1 playlist com as músicas “Ride-Lana Del Rey”, “Age of Love-Charlotte de Witte”, “Legacy-Sara Landry”, “Dori Me-Deborah de Luca”, “Metal Heart-Cat Power”
 
 Cenário: Ver mais recomendações (GUI)
 Given a usuária “Victória” está logada 
 And estou na página “Recomendações”
 When seleciono a opção “Ver mais recomendações”
-Then sou redirecionado para a página “Músicas recomendadas” com 10 músicas: as 5 últimas músicas recomendadas “Ride-Lana Del Rey”, “Age of Love-Charlotte de Witte”, “Legacy-Sara Landry”, “Dori Me-Deborah de Luca”, “Metal Heart-Cat Power” mais as 5 novas músicas recomendadas “Rigid (Kobosil 44 Rush Mix)-Rosa Anschütz”,  “Hypnotized (Joyhauser Mix)-Amelie Lens”, “Shame-Low”,  “Schwarze Schatten-Schepperlotte”,  “City Looks Pretty-Courtney Barnett”
+Then sou redirecionada para a página “Músicas recomendadas” com 10 músicas: as 5 últimas músicas recomendadas “Ride-Lana Del Rey”, “Age of Love-Charlotte de Witte”, “Legacy-Sara Landry”, “Dori Me-Deborah de Luca”, “Metal Heart-Cat Power” mais as 5 novas músicas recomendadas “Rigid (Kobosil 44 Rush Mix)-Rosa Anschütz”,  “Hypnotized (Joyhauser Mix)-Amelie Lens”, “Shame-Low”,  “Schwarze Schatten-Schepperlotte”,  “City Looks Pretty-Courtney Barnett”
 
 Cenário:  Ver mais recomendações (II) (GUI)
 Given a usuária “Victória” está logada 
