@@ -55,7 +55,7 @@ And  o sistema gera uma lista de recomendações com 5 músicas que podem ser vi
 
 Cenário: Excluir música(s) das recomendadas (serviço)
 Given A usuária “Victória” está no sistema 
-And a playlist “Músicas recomendadas“ associada a usuária “Victória“ tem as músicas “Ride-Lana Del Rey”, “Age of Love-Charlotte de Witte”, “Legacy-Sara Landry”, “Dori Me-Deborah de Luca”, “Metal Heart-Cat Pow﻿er”
+And a playlist “Músicas recomendadas“ associada a usuária “Victória" tem as músicas “Ride-Lana Del Rey”, “Age of Love-Charlotte de Witte”, “Legacy-Sara Landry”, “Dori Me-Deborah de Luca”, “Metal Heart-Cat Pow﻿er”
 When seleciona a música “Ride-Lana Del Rey” e a exclui da lista de recomendações
 Then a lista de recomendações está sem a música “Ride-Lana Del Rey” e com as músicas “Age of Love-Charlotte de Witte”, “Legacy-Sara Landry”, “Dori Me-Deborah de Luca”, “Metal Heart-Cat Power”
 
