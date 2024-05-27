@@ -56,14 +56,14 @@ And  o sistema gera uma lista de recomendações com 5 músicas que podem ser vi
 
 Cenário: Excluir música(s) das recomendadas (serviço)
 Given A usuária “Victória” está no sistema 
-And a playlist “Músicas recomendadas” associada a usuária “Victória" tem as músicas “Ride-Lana Del Rey”, “Age of Love-Charlotte de Witte”, “Legacy-Sara Landry”, “Dori Me-Deborah de Luca”, “Metal Heart-Cat Pow﻿er”
+And a playlist “Músicas recomendadas” associada a usuária “Victória” tem as músicas “Ride-Lana Del Rey”, “Age of Love-Charlotte de Witte”, “Legacy-Sara Landry”, “Dori Me-Deborah de Luca”, “Metal Heart-Cat Pow﻿er”
 When seleciona a música “Ride-Lana Del Rey” e a exclui da lista de recomendações
 Then a lista de recomendações está sem a música “Ride-Lana Del Rey” e com as músicas “Age of Love-Charlotte de Witte”, “Legacy-Sara Landry”, “Dori Me-Deborah de Luca”, “Metal Heart-Cat Power”
 
 Cenário: Ver mais recomendações (serviço)
 Given A usuária “Victória” está no sistema
 And a playlist “Músicas recomendadas” associada a usuária “Victória” tem as músicas “Ride-Lana Del Rey”, “Age of Love-Charlotte de Witte”, “Legacy-Sara Landry”, “Dori Me-Deborah de Luca”, “Metal Heart-Cat Pow﻿er”
-When seleciono a opção "Ver mais"
+When seleciono a opção “Ver mais”
 Then o sistema gera mais 5 recomendações e as adiciona a lista de recomendações “Rigid (Kobosil 44 Rush Mix)-Rosa Anschütz”,  “Hypnotized (Joyhauser Mix)-Amelie Lens”, “Shame-Low”, “Schwarze Schatten-Schepperlotte”, “City Looks Pretty-Courtney Barnett”
 And agora a lista de recomendações do sistema tem 10 músicas: as 5 últimas músicas recomendadas “Ride-Lana Del Rey”, “Age of Love-Charlotte de Witte”, “Legacy-Sara Landry”, “Dori Me-Deborah de Luca”, “Metal Heart-Cat Pow﻿er” mais as 5 novas músicas recomendadas “Rigid (Kobosil 44 Rush Mix)-Rosa Anschütz”,  “Hypnotized (Joyhauser Mix)-Amelie Lens”, “Shame-Low”, “Schwarze Schatten-Schepperlotte”, “City Looks Pretty-Courtney Barnett”
 
