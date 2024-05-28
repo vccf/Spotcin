@@ -15,8 +15,8 @@ Scenario: Exibição do histórico de podcasts dessa semana.
 Given que o usuário “João” está logado em sua conta.
 And ele está na página “inicial”. 
 When ele seleciona a opção “Histórico”. 
-And ele seleciona a opção “Histórico de Músicas”.
-Then ele é redirecionado para a página “Histórico de podcasts".
+And ele seleciona a opção “Histórico de Podcasts”.
+Then ele é redirecionado para a página “Histórico de Podcasts".
 And ele vê o "Histórico de podcasts dessa semana".
 
 Scenario: Exibiçaõ do histórico de podcasts desde sempre.
