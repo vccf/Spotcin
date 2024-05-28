@@ -9,3 +9,10 @@ And ele está na página “inicial”.
 When ele seleciona a opção “Histórico”. 
 And ele seleciona a opção “Histórico de Músicas”.
 Then ele é redirecionado para a página “Histórico de Músicas dessa semana”.
+
+Scenario: Exibição do histórico de músicas/podcasts desde sempre.
+Given o usuário “João” está logado em sua conta.
+And ele está na página “inicial”. 
+When ele seleciona a opção “Histórico”. 
+And ele seleciona a opção “Histórico de Músicas”.
+Then ele é redirecionado para a página “Histórico de Músicas”.
