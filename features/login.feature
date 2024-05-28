@@ -33,3 +33,11 @@ Feature: Login
         Then o usuário permanece na página "login"
         And uma mensagem de erro "senha incorreta" deve ser exibida
         And o usuário não deve estar logado
+
+    Scenario: Login com sucesso
+        Given o usuário está na página "login"
+        And existe um usuário cadastrado no sistema com email "john@example.com" e senha "secretpassword"
+        When o usuário insere "john@example.com" no campo "email"
+        And o usuário insere "secretpassword" no campo "senha"
+        And o usuário seleciona a opção "Entrar"
+        Then o usuário deve ser redirecionado para a página "inicial"
