@@ -41,3 +41,4 @@ Feature: Login
         And o usuário insere "secretpassword" no campo "senha"
         And o usuário seleciona a opção "Entrar"
         Then o usuário deve ser redirecionado para a página "inicial"
+        And o usuário deve estar autenticado
