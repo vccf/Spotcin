@@ -8,11 +8,20 @@ Given o usuário “João” está logado em sua conta.
 And ele está na página “inicial”. 
 When ele seleciona a opção “Histórico”. 
 And ele seleciona a opção “Histórico de Músicas”.
-Then ele é redirecionado para a página “Histórico de Músicas dessa semana”.
+Then ele é redirecionado para a página “Histórico de Músicas”.
 
-Scenario: Exibição do histórico de músicas/podcasts desde sempre.
-Given o usuário “João” está logado em sua conta.
+Scenario: Exibição do histórico de podcasts dessa semana.
+Given que o usuário “João” está logado em sua conta.
 And ele está na página “inicial”. 
 When ele seleciona a opção “Histórico”. 
 And ele seleciona a opção “Histórico de Músicas”.
-Then ele é redirecionado para a página “Histórico de Músicas”.
+Then ele é redirecionado para a página “Histórico de podcasts".
+And ele vê o "Histórico de podcasts dessa semana".
+
+Scenario: Exibiçaõ do histórico de podcasts desde sempre.
+Given que o usuário "John Connor" está logado em sua conta.
+And ele está na página "Histórico de podcasts".
+When ele seleciona a opção "Veja Mais".
+Then ele é vê o Histórico de podcasts desde sempre".
+
+
