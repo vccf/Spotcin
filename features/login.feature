@@ -32,3 +32,4 @@ Feature: Login
         And o usuário  seleciona a opção "Entrar"
         Then o usuário permanece na página "login"
         And uma mensagem de erro "senha incorreta" deve ser exibida
+        And o usuário não deve estar logado
