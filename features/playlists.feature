@@ -32,4 +32,4 @@ And o usuário preenche o nome com "Músicas legais", a descrição com
 And o usuário seleciona a opção "Salvar"
 Then o usuário ainda está na página "Playlists"
 And o usuário consegue ver a mensagem "Essa playlist já existe, escolha um novo nome"
-
+#And do roteiro, remover depois
