@@ -33,3 +33,13 @@ And o usuário seleciona a opção "Salvar"
 Then o usuário ainda está na página "Playlists"
 And o usuário consegue ver a mensagem "Essa playlist já existe, escolha um novo nome"
 
+Scenario: Atualizando uma playlist com sucesso
+Given que o usuário "fulano" está logado
+And o usuário está na página "Playlists"
+And existe uma playlist chamada "Música legais"
+When o usuário seleciona os três pontos ao lado do nome "Músicas legais"
+And o usuário seleciona a opção "Atualizar"
+And o usuário muda o nome para "Músicas de carros"
+And o usuário seleciona a opção "Salvar"
+Then o usuário ainda está na página "Playlists"
+And o usuário consegue ver a imagem "carro.jpg" com o nome "Músicas de carros"
