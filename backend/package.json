@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "description": "",
   "scripts": {
-    "start": "env-cmd -f .env.${env} nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
+    "start": "env-cmd -f .env.dev nodemon --watch \"src/**/*.ts\" --exec \"ts-node\" src/index.ts",
     "build": "tsc -p .",
     "prod": "node dist/src/index.js",
     "test": "env-cmd -f .env.test jest --verbose --coverage  --config ./jest.config.js --detectOpenHandles",
-    "prettier": "prettier --write 'src/**/*.{ts,js}'",
-    "lint": "eslint '**/*.ts' --report-unused-disable-directives --max-warnings 0 --fix",
-    "prepare": "husky install"
+    "prettier": "prettier --write \"src/**/*.{ts,js}\"",
+    "lint": "eslint \"**/*.ts\" --report-unused-disable-directives --max-warnings 0 --fix",
+    "prepare": "cd .. && husky install backend/.husky"
   },
   "keywords": [],
   "author": "",
@@ -40,6 +40,6 @@
     "prettier": "^2.8.4",
     "supertest": "^6.3.3",
     "ts-jest": "^29.1.0",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.2"
   }
 }
