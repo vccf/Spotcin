@@ -5,7 +5,7 @@ export default class UserEntity extends BaseEntity {
   email: string;
   password: string;
 
-  constructor(data: UserEntity) {
+  constructor(data: Partial<UserEntity>) {
     super(data.id || '');
     this.name = data.name || '';
     this.email = data.email || '';

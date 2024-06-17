@@ -5,7 +5,7 @@ export default class UserModel extends BaseModel {
   email: string;
   password: string;
 
-  constructor(data: UserModel) {
+  constructor(data: Partial<UserModel>) {
     super(data.id || '');
     this.name = data.name || '';
     this.email = data.email || '';
