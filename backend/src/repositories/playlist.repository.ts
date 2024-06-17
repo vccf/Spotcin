@@ -95,10 +95,73 @@ class PlaylistRepository extends BaseRepository<PlaylistEntity> {
       throw new InternalServerError();
     }
   }
-  
-  //Delete e Add song por fazer
 
+  //add e delete song precisam ser checadas. O tipo de song talvez precise ser mudado
+  
+  public async deleteSongUsingPlaylistId(song: string, id: string): Promise<void> {
+    try {
+      const playlist = await this.getPlaylistById(id);
+      if (playlist) {
+        const nPlaylist = {
+          ...playlist,
+          songs: playlist.songs.filter((name) => name !== song)
+        };
+        let nPlay = await this.updatePlaylistById(nPlaylist, id);
+      }
+      return undefined;
+    } catch (e) {
+      throw new InternalServerError();
+    }
+  }
+
+  public async deleteSongUsingPlaylistName(song: string, name: string): Promise<void> {
+    try {
+      const playlist = await this.getPlaylistByName(name);
+      if (playlist) {
+        const nPlaylist = {
+          ...playlist,
+          songs: playlist.songs.filter((nam) => nam !== song)
+        };
+        let nPlay = await this.updatePlaylistByName(nPlaylist, name);
+      }
+      return undefined;
+    } catch (e) {
+      throw new InternalServerError();
+    }
+  }
+
+  public async addSongUsingPlaylistId(song: string, id: string): Promise<void> {
+    try {
+      const playlist = await this.getPlaylistById(id);
+      if (playlist) {
+        const nPlaylist = {
+          ...playlist,
+          songs: [...playlist.songs, song]
+        };
+        let nPlay = await this.updatePlaylistById(nPlaylist, id);
+      }
+      return undefined;
+    } catch (e) {
+      throw new InternalServerError();
+    }
+  }
+  
+  public async addSongUsingPlaylistName(song: string, name: string): Promise<void> {
+    try {
+      const playlist = await this.getPlaylistByName(name);
+      if (playlist) {
+        const nPlaylist = {
+          ...playlist,
+          songs: [...playlist.songs, song]
+        };
+        let nPlay = await this.updatePlaylistByName(nPlaylist, name);
+      }
+      return undefined;
+    } catch (e) {
+      throw new InternalServerError();
+    }
+  }
 
 
 }
-export default new PlaylistRepository();
+export default PlaylistRepository;
