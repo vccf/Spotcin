@@ -1,17 +1,79 @@
-import { Request, Response } from 'express'; // Assuming you're using Express for your application
-import RecommendationService from '../services/recommendation.service';
+import { Router, Request, Response } from 'express'; // Assuming you're using Express for your application
 import { InternalServerError, NotFoundError } from '../utils/errors/http.error'; // Custom error handling if applicable
+import RecommendationService from '../services/recommendation.service';
+import RecommendationEntity from '../entities/recommendation.entity'
 
 class RecommendationController {
+    private prefix: string = '/recommendations';
+    public router: Router;
     private recommendationService: RecommendationService;
-
-    constructor() {
-        this.recommendationService = new RecommendationService();
+  
+    constructor(router: Router, recommendationService: RecommendationService) {
+      this.router = router;
+      this.recommendationService = recommendationService;
+      this.initRoutes();
     }
 
-    public getAllRecommendations = async (req: Request, res: Response): Promise<void> => {
+    private initRoutes() {
+
+        // Route to generate recommendations
+        this.router.post('/api/recommendations/generate', (req: Request, res: Response) => {
+            const { userId, userHistory } = req.body;
+            const playlist = this.recommendationService.generateRecommendations(userId, userHistory);
+            res.status(201).json(playlist);
+        });
+        // Route to get more recommendations
+        this.router.post('/api/recommendations/more', (req: Request, res: Response) => {
+            const { userId, userHistory } = req.body;
+            const playlist = this.recommendationService.getMoreRecommendations(userId, userHistory);
+            res.status(200).json(playlist);
+        });
+        // Route to get recommendation history
+        this.router.get('/api/recommendations/history/:userId', (req: Request, res: Response) => {
+            const userId = req.params.userId;
+            const playlist = this.recommendationService.getRecommendationHistory(userId);
+            res.status(200).json(playlist);
+        });
+        // Route to delete a recommended song
+        this.router.delete('/api/recommendations/:userId/:songIndex', (req: Request, res: Response) => {
+            const userId = req.params.userId;
+            const songIndex = parseInt(req.params.songIndex, 10); // Convert string to number
+            const result = this.recommendationService.deleteRecommendedSong(userId, songIndex);
+            if (typeof result === 'string') {
+                res.status(400).json({ error: result });
+            } else {
+                res.status(200).json(result);
+            }
+        });
+        // Route to check user listening history for recommendations
+        this.router.post('/api/recommendations/check', (req: Request, res: Response) => {
+            const { userId, userHistory } = req.body;
+            const errorMessage = this.recommendationService.checkUserListeningHistory(userId, userHistory);
+            if (errorMessage) {
+                res.status(400).json({ error: errorMessage });
+            } else {
+                res.status(200).json({ message: 'User listened enough songs for recommendations' });
+            }
+        });
+    }
+
+    public generateRecommendations = async (req: Request, res: Response): Promise<void> => {
+        const { userId } = req.params;
+        const { userHistory } = req.body; // Assuming the body contains userHistory array
         try {
-            const recommendations = await this.recommendationService.getAllRecommendations();
+            const recommendations = await this.recommendationService.generateRecommendations(userId, userHistory);
+            res.status(201).json(recommendations);
+        } catch (e) {
+            console.error(e);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    };
+
+    public getMoreRecommendations = async (req: Request, res: Response): Promise<void> => {
+        const { userId } = req.params;
+        const { userHistory } = req.body; // Assuming the body contains userHistory array
+        try {
+            const recommendations = await this.recommendationService.getMoreRecommendations(userId, userHistory);
             res.json(recommendations);
         } catch (e) {
             console.error(e);
@@ -19,82 +81,38 @@ class RecommendationController {
         }
     };
 
-    public getRecommendationByUserId = async (req: Request, res: Response): Promise<void> => {
+    public getRecommendationHistory = async (req: Request, res: Response): Promise<void> => {
         const { userId } = req.params;
         try {
-            const recommendation = await this.recommendationService.getRecommendationByUserId(userId);
-            if (!recommendation) {
-                throw new NotFoundError(`Recommendation not found for user ID: ${userId}`);
-            }
-            res.json(recommendation);
+            const recommendationHistory = await this.recommendationService.getRecommendationHistory(userId);
+            res.json(recommendationHistory);
         } catch (e) {
-            if (e instanceof NotFoundError) {
-                res.status(404).json({ error: e.message });
+            console.error(e);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    };
+
+    public deleteRecommendedSong = async (req: Request, res: Response): Promise<void> => {
+        const { userId, songIndex } = req.params;
+        try {
+            await this.recommendationService.deleteRecommendedSong(userId, +songIndex); // Convert songIndex to number
+            res.status(204).send();
+        } catch (e) {
+            console.error(e);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    };
+
+    public checkUserListeningHistory = async (req: Request, res: Response): Promise<void> => {
+        const { userId } = req.params;
+        const { userHistory } = req.body; // Assuming the body contains userHistory array
+        try {
+            const errorMessage = await this.recommendationService.checkUserListeningHistory(userId, userHistory);
+            if (errorMessage) {
+                res.status(400).json({ error: errorMessage });
             } else {
-                console.error(e);
-                res.status(500).json({ error: 'Internal Server Error' });
+                res.status(200).json({ message: 'User listened enough songs for recommendations' });
             }
-        }
-    };
-
-    public deleteRecommendationByUserId = async (req: Request, res: Response): Promise<void> => {
-        const { userId } = req.params;
-        try {
-            await this.recommendationService.deleteRecommendationByUserId(userId);
-            res.status(204).send();
-        } catch (e) {
-            console.error(e);
-            res.status(500).json({ error: 'Internal Server Error' });
-        }
-    };
-
-    public updateRecommendationByUserId = async (req: Request, res: Response): Promise<void> => {
-        const { userId } = req.params;
-        const updatedRecommendation = req.body; // Assuming the body contains the updated recommendation
-        try {
-            const recommendation = await this.recommendationService.updateRecommendationByUserId(userId, updatedRecommendation);
-            if (!recommendation) {
-                throw new NotFoundError(`Recommendation not found for user ID: ${userId}`);
-            }
-            res.json(recommendation);
-        } catch (e) {
-            if (e instanceof NotFoundError) {
-                res.status(404).json({ error: e.message });
-            } else {
-                console.error(e);
-                res.status(500).json({ error: 'Internal Server Error' });
-            }
-        }
-    };
-
-    public createOrUpdateRecommendation = async (req: Request, res: Response): Promise<void> => {
-        const newRecommendation = req.body; // Assuming the body contains the new recommendation
-        try {
-            const recommendation = await this.recommendationService.createOrUpdateRecommendation(newRecommendation);
-            res.status(201).json(recommendation);
-        } catch (e) {
-            console.error(e);
-            res.status(500).json({ error: 'Internal Server Error' });
-        }
-    };
-
-    public deleteSongFromRecommendation = async (req: Request, res: Response): Promise<void> => {
-        const { userId, song } = req.params;
-        try {
-            await this.recommendationService.deleteSongFromRecommendation(userId, song);
-            res.status(204).send();
-        } catch (e) {
-            console.error(e);
-            res.status(500).json({ error: 'Internal Server Error' });
-        }
-    };
-
-    public addSongToRecommendation = async (req: Request, res: Response): Promise<void> => {
-        const { userId } = req.params;
-        const { song } = req.body; // Assuming the body contains the song to add
-        try {
-            await this.recommendationService.addSongToRecommendation(userId, song);
-            res.status(204).send();
         } catch (e) {
             console.error(e);
             res.status(500).json({ error: 'Internal Server Error' });
