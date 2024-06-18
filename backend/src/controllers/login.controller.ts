@@ -1,6 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { Result, SuccessResult } from '../utils/result';
-import { HttpBadRequestError } from '../utils/errors/http.error';
+import { Result, SuccessResult, FailureResult } from '../utils/result';
 import LoginService from '../services/login.service';
 import LoginEntity from '../entities/login.entity';
 
@@ -24,10 +23,9 @@ class UserController {
     const user = new LoginEntity({ email, password });
 
     if (!email || !password) {
-      return new HttpBadRequestError({
+      return new FailureResult({
         msg: 'email e senha são obrigatórios',
-        msgCode: 'email e senha são obrigatórios'
-      });
+      }).handle(res);
     }
 
       var authUser = await this.loginService.login(user)
