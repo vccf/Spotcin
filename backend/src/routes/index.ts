@@ -4,6 +4,8 @@ import TestController from '../controllers/test.controller';
 import TestService from '../services/test.service';
 import UserController from '../controllers/user.controller';
 import UserService from '../services/user.service';
+import LoginController from '../controllers/login.controller';
+import LoginService from '../services/login.service';
 
 const router = Router();
 const prefix = '/api';
@@ -17,5 +19,9 @@ export default (app: Express) => {
     prefix,
     new TestController(router, di.getService(TestService)).router
   );
+  app.use(
+    prefix,
+    new LoginController(router, di.getService(LoginService)).router
+  )
 };
 
