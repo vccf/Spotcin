@@ -42,54 +42,18 @@ class PlaylistService {
     return playlistModel;
   }
 
-  public async getPlaylistByName(name: string): Promise<PlaylistModel>{
-    const playlistEntity = await this.playlistRepository.getPlaylistByName(name);
-
-    if(!playlistEntity){
-      throw new NotFoundError({
-        msg: 'Playlist name not found',
-        msgCode: PlaylistServiceMessageCode.playlist_not_found,
-      });
-    }
-
-    const playlistModel = new PlaylistModel(playlistEntity);
-
-    return playlistModel;
-  }
-
   public async deletePlaylistById(id: string): Promise<void>{
     await this.playlistRepository.deletePlaylistById(id);
 
     //Adicionar um erro?
   }
   
-  public async deletePlaylistByName(name: string): Promise<void>{
-    await this.playlistRepository.deletePlaylistByName(name);
-
-    //Adicionar um erro?
-  }
-
   public async updatePlaylistById(newPlaylist: PlaylisEntity, id: string): Promise<PlaylistModel>{
     const playlistEntity = await this.playlistRepository.updatePlaylistById(newPlaylist, id);
 
     if(!playlistEntity){
       throw new NotFoundError({
         msg: 'Playlist uptade by id error',
-        msgCode: PlaylistServiceMessageCode.playlist_update_error,
-      });
-    }
-    
-    const playlistModel = new PlaylistModel(playlistEntity);
-
-    return playlistModel;
-  }
-
-  public async updatePlaylistByName(newPlaylist: PlaylisEntity, name: string): Promise<PlaylistModel>{
-    const playlistEntity = await this.playlistRepository.updatePlaylistByName(newPlaylist, name);
-
-    if(!playlistEntity){
-      throw new NotFoundError({
-        msg: 'Playlist uptade by name error',
         msgCode: PlaylistServiceMessageCode.playlist_update_error,
       });
     }
@@ -120,21 +84,8 @@ class PlaylistService {
     //add erro?
   }
 
-  public async deleteSongUsingPlaylistName(song: string, name: string): Promise<void>{
-    await this.playlistRepository.deleteSongUsingPlaylistName(song, name);
-
-    //add erro?
-  }
-
   public async addSongUsingPlaylistId(song: string, id: string): Promise<void>{
     await this.playlistRepository.addSongUsingPlaylistId(song, id);
-
-    //add erro?
-  }
-
-
-  public async addSongUsingPlaylistName(song: string, name: string): Promise<void>{
-    await this.playlistRepository.addSongUsingPlaylistId(song, name);
 
     //add erro?
   }
