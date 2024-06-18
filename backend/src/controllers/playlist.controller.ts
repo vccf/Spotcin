@@ -23,8 +23,6 @@ class PlaylistController {
             this.getPlaylistById(req, res)
         );
         
-        //criar rota /songs que retorna todos os songs
-
         this.router.post(this.prefix, (req: Request, res: Response) =>
             this.createPlaylist(req, res)
         );

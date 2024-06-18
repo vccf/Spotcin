@@ -45,6 +45,24 @@ defineFeature(feature, (test) => {
         });
 
     });
+
+    //////////////////
+
+    test('Criar uma playlist sem nome', ({ given, when, then, and }) => {
+      given(/^que o usuário está logado$/, async () => {});
+  
+      when(/^uma requisição POST for enviada para "(.*)" com o corpo da requisição sendo um JSON com a descrição "(.*)"$/,
+          async (url, playlistDescription) => {
+            response = await request.post(url).send({
+              description: playlistDescription,
+            });
+      });
+
+      then(/^o status da resposta deve ser "(.*)"$/, (statusCode) => {
+          expect(response.status).toBe(parseInt(statusCode, 10));
+      });
+
+    });
   
     //////////////////
 
@@ -80,6 +98,170 @@ defineFeature(feature, (test) => {
 
     });
   
+    //////////////////
+
+    test('Uptade de uma playlist que não existe', ({ given, when, then, and }) => {
+      given(/^que o PlaylistRepository não tem uma playlist com id "(.*)"$/, async (playlistId) => {
+        const existingPlaylist = await mockPlaylistRepository.getPlaylistById(playlistId);
+        if(existingPlaylist){await mockPlaylistRepository.deletePlaylistById(playlistId);}
+
+      });
+
+      when(/^uma requisição PUT for enviada para "(.*)" com o corpo da requisição sendo um JSON com o nome "(.*)"$/,
+          async (url, playlistName) => {
+            response = await request.put(url).send({
+              name: playlistName,
+            });
+      });
+
+      then(/^o status da resposta deve ser "(.*)"$/, (statusCode) => {
+              expect(response.status).toBe(parseInt(statusCode, 10));
+      });
+     
+
+  });
+
+  //////////////////
+
+  test('Delete de uma playlist', ({ given, when, then, and }) => {
+    given(/^que o PlaylistRepository tem uma playlist com id "(.*)" e nome "(.*)"$/, async (playlistId, playlistName) => {
+        mockPlaylistEntity = new PlaylistEntity({
+            id: playlistId,
+            name: playlistName,
+        })
+
+        await mockPlaylistRepository.createPlaylist(mockPlaylistEntity);
+    });
+
+    when(/^uma requisição DELETE for enviada para "(.*)"$/,
+        async (url) => {
+          response = await request.delete(url);
+    });
+
+    then(/^o status da resposta deve ser "(.*)"$/, (statusCode) => {
+            expect(response.status).toBe(parseInt(statusCode, 10));
+    });
+     
+
+  });
+
+  //////////////////
+
+  test('Delete de uma playlist que não existe', ({ given, when, then, and }) => {
+    given(/^que o PlaylistRepository não tem uma playlist com id "(.*)"$/, async (playlistId) => {
+      const existingPlaylist = await mockPlaylistRepository.getPlaylistById(playlistId);
+      if(existingPlaylist){await mockPlaylistRepository.deletePlaylistById(playlistId);}
+    });
+
+    when(/^uma requisição DELETE for enviada para "(.*)"$/,
+        async (url) => {
+          response = await request.delete(url);
+    });
+
+    then(/^o status da resposta deve ser "(.*)"$/, (statusCode) => {
+            expect(response.status).toBe(parseInt(statusCode, 10));
+    });
+     
+
+  });
+
+  //////////////////
+
+  test('Adicionar uma música a uma playlist', ({ given, when, then, and }) => {
+    given(/^que o PlaylistRepository tem uma playlist com id "(.*)" e nome "(.*)"$/, async (playlistId, playlistName) => {
+      mockPlaylistEntity = new PlaylistEntity({
+          id: playlistId,
+          name: playlistName,
+      })
+
+      await mockPlaylistRepository.createPlaylist(mockPlaylistEntity);
+    });
+
+    when(/^uma requisição POST for enviada para "(.*)"$/, async (url) => {
+          response = await request.post(url);
+    });
+
+    then(/^o status da resposta deve ser "(.*)"$/, (statusCode) => {
+            expect(response.status).toBe(parseInt(statusCode, 10));
+    });
+
+     
+
+  });
+
+  //////////////////
+
+  test('Adicionar uma música a uma playlist que já tem a música', ({ given, when, then, and }) => {
+    given(/^que o PlaylistRepository tem uma playlist com id "(.*)", nome "(.*)" e música "(.*)"$/, async (playlistId, playlistName, songName) => {
+      mockPlaylistEntity = new PlaylistEntity({
+          id: playlistId,
+          name: playlistName,
+          songs: [songName],
+      })
+
+      await mockPlaylistRepository.createPlaylist(mockPlaylistEntity);
+    });
+
+    when(/^uma requisição POST for enviada para "(.*)"$/, async (url) => {
+          response = await request.post(url);
+    });
+
+    then(/^o status da resposta deve ser "(.*)"$/, (statusCode) => {
+            expect(response.status).toBe(parseInt(statusCode, 10));
+    });
+
+     
+
+  });
+
+  //////////////////
+
+  test('Deletar uma música de uma playlist', ({ given, when, then, and }) => {
+    given(/^que o PlaylistRepository tem uma playlist com id "(.*)", nome "(.*)" e música "(.*)"$/, async (playlistId, playlistName, songName) => {
+      mockPlaylistEntity = new PlaylistEntity({
+          id: playlistId,
+          name: playlistName,
+          songs: [songName],
+      })
+
+      await mockPlaylistRepository.createPlaylist(mockPlaylistEntity);
+    });
+
+    when(/^uma requisição DELETE for enviada para "(.*)"$/, async (url) => {
+          response = await request.delete(url);
+    });
+
+    then(/^o status da resposta deve ser "(.*)"$/, (statusCode) => {
+            expect(response.status).toBe(parseInt(statusCode, 10));
+    });
+
+     
+
+  });
+
+  //////////////////
+
+  test('Deletar uma música de uma playlist que não tem a música', ({ given, when, then, and }) => {
+    given(/^que o PlaylistRepository tem uma playlist com id "(.*)" e nome "(.*)"$/, async (playlistId, playlistName) => {
+      mockPlaylistEntity = new PlaylistEntity({
+          id: playlistId,
+          name: playlistName,
+      })
+
+      await mockPlaylistRepository.createPlaylist(mockPlaylistEntity);
+    });
+
+    when(/^uma requisição DELETE for enviada para "(.*)"$/, async (url) => {
+          response = await request.delete(url);
+    });
+
+    then(/^o status da resposta deve ser "(.*)"$/, (statusCode) => {
+            expect(response.status).toBe(parseInt(statusCode, 10));
+    });
+
+     
+
+  });
 
 
   

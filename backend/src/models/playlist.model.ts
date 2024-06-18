@@ -4,7 +4,7 @@ class PlaylistModel extends BaseModel {
   name: string;
   description: string;
   songs: string[];
-  categories: string[]; //Talvez precise ser atualizado o tipo
+  categories: string[];
   
   constructor({
     id,

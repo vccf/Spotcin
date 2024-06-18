@@ -31,14 +31,13 @@ class PlaylistRepository extends BaseRepository<PlaylistEntity> {
       const playlist = await this.getPlaylistById(id);
 
       if (playlist) {
-        await this.delete((playlist) => playlist.id === id);
+        await this.delete((playlist) => playlist.id !== id);
       }
     } catch (e) {
       throw new InternalServerError();
     }
   }
     
-  //Talvez esteja errada
   public async updatePlaylistById(newPlaylist: PlaylistEntity, id: string): Promise<PlaylistEntity | undefined> {
     try {
       let nPlaylist = await this.update((playlist) => playlist.id === id, newPlaylist);
@@ -60,8 +59,6 @@ class PlaylistRepository extends BaseRepository<PlaylistEntity> {
       throw new InternalServerError();
     }
   }
-
-  //add e delete song precisam ser checadas. O tipo de song talvez precise ser mudado
   
   public async deleteSongUsingPlaylistId(song: string, id: string): Promise<void> {
     try {
