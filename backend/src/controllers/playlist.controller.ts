@@ -72,6 +72,8 @@ class PlaylistController {
     }
 
     public async updatePlaylistById(req: Request, res: Response){
+        const oldPlaylist = await this.playlistService.getPlaylistById(req.params.id);
+        req.body.songs = oldPlaylist.songs;
         const playlist = await this.playlistService.updatePlaylistById(new PlaylistEntity(req.body), req.params.id);
 
         return new SuccessResult({
