@@ -1,4 +1,5 @@
 import RecommendationEntity from '../entities/recommendation.entity';
+import PlaylistEntity from '../entities/playlist.entity';
 import { InternalServerError } from '../utils/errors/http.error';
 import BaseRepository from './base.repository';
 
