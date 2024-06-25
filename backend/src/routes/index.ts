@@ -3,6 +3,10 @@ import { di } from '../di';
 import TestController from '../controllers/test.controller';
 import TestService from '../services/test.service';
 
+import PlaylistController from '../controllers/playlist.controller';
+import PlaylistService from '../services/playlist.service';
+
+
 const router = Router();
 const prefix = '/api';
 
@@ -11,4 +15,12 @@ export default (app: Express) => {
     prefix,
     new TestController(router, di.getService(TestService)).router
   );
+
+  app.use(
+    prefix,
+    new PlaylistController(router, di.getService(PlaylistService)).router
+  );
+
+
+
 };
