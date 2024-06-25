@@ -1,6 +1,10 @@
 import OtherRepository from '../repositories/other.repository';
 import TestRepository from '../repositories/test.repository';
 import TestService from '../services/test.service';
+
+import PlaylistRepository from '../repositories/playlist.repository';
+import PlaylistService from '../services/playlist.service';
+
 import Injector from './injector';
 import UserRepository from '../repositories/user.repository';
 import UserService from '../services/user.service';
@@ -33,3 +37,7 @@ di.registerService(
   new LoginService(di.getRepository(UserRepository)
 ));
 
+
+// Playlist
+di.registerRepository(PlaylistRepository, new PlaylistRepository());
+di.registerService(PlaylistService, new PlaylistService(di.getRepository(PlaylistRepository)));
