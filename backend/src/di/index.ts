@@ -32,3 +32,4 @@ di.registerService(
   LoginService,
   new LoginService(di.getRepository(UserRepository)
 ));
+

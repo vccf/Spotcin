@@ -24,4 +24,3 @@ export default (app: Express) => {
     new LoginController(router, di.getService(LoginService)).router
   )
 };
-
