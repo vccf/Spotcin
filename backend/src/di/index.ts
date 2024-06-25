@@ -2,6 +2,9 @@ import OtherRepository from '../repositories/other.repository';
 import TestRepository from '../repositories/test.repository';
 import TestService from '../services/test.service';
 import Injector from './injector';
+import UserRepository from '../repositories/user.repository';
+import UserService from '../services/user.service';
+import LoginService from '../services/login.service';
 
 export const di = new Injector();
 
@@ -13,5 +16,20 @@ di.registerService(
   new TestService(
     di.getRepository(TestRepository),
     di.getRepository(OtherRepository)
-  )
-);
+  ));
+
+    
+// Users
+di.registerRepository(UserRepository, new UserRepository());
+di.registerService(
+  UserService,
+  new UserService(
+    di.getRepository(UserRepository)
+  ));
+
+// Login
+di.registerService(
+  LoginService,
+  new LoginService(di.getRepository(UserRepository)
+));
+
