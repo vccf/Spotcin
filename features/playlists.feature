@@ -45,3 +45,4 @@ And o usuário muda o nome para "Músicas de carros"
 And o usuário seleciona a opção "Salvar"
 Then o usuário ainda está na página "Playlists"
 And o usuário consegue ver a imagem "carro.jpg" com o nome "Músicas de carros"
+
