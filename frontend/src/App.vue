@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
-import HeaderLogged from '../components/HeaderLogged.vue'
-import HeaderNotLogged from '../components/HeaderNotLogged.vue'
+import HeaderLogged from '../src/components/HeaderLogged.vue'
+import HeaderNotLogged from '../src/components/HeaderNotLogged.vue'
 
 import { RouterView, useRoute } from 'vue-router'
 import { onMounted, ref, watch } from 'vue'
