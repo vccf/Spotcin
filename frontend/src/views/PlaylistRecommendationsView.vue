@@ -6,24 +6,41 @@
             <li v-for="song in playlist" :key="song.id">
                 <button class="purple-button" @click="playSong(song.id)">Play</button>
                 <p>{{ song.name }} - {{ song.artist }}</p>
-                <button @click="removeSongFromPlaylist(song.id)">Remove Song</button>    
+                <button class="purple-button"@click="removeSongFromPlaylist(song.id)">Remove Song</button>    
             </li>
         </ul>
-        <button v-if="showLoadMoreButton" @click="loadMore">Ver mais</button>
+        <button class="ver-mais-button"showLoadMoreButton @click="loadMore">Ver mais</button>
         <VerMais/>
     </div>    
 </template>
 
 <style scoped>
+h1 {
+    color: plum;
+    font-size: 50px;
+    text-align: center;
+    margin-top: 50px;
+}
 li {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-
-.play-button {
-    margin-right: 10px;
+.purple-button {
     background-color: plum;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+.purple-button:hover {
+    background-color: plum;
+    color: white;
 }
 
 .excluir-button {
@@ -62,76 +79,30 @@ const router=useRouter();
 const { getRecommendations, deleteSong, getMoreRecommendations } = useApiService ();
 
 const playlist = ref([
-    { 
-        id: 1, 
-        name: 'Song 1', 
-        artist: 'Artist 1', 
-        genre: 'Genre 1', 
-        tags: ['Tag 1', 'Tag 2']
-    },
-    { 
-        id: 2, 
-        name: 'Song 2', 
-        artist: 'Artist 2', 
-        genre: 'Genre 2', 
-        tags: ['Tag 3', 'Tag 4']
-    },
-    { 
-        id: 3, 
-        name: 'Song 3', 
-        artist: 'Artist 3', 
-        genre: 'Genre 3', 
-        tags: ['Tag 5', 'Tag 6']
-    },
-    { 
-        id: 4, 
-        name: 'Song 4', 
-        artist: 'Artist 4', 
-        genre: 'Genre 4', 
-        tags: ['Tag 7', 'Tag 8']
-    },
-    { 
-        id: 5, 
-        name: 'Song 5', 
-        artist: 'Artist 5', 
-        genre: 'Genre 5', 
-        tags: ['Tag 9', 'Tag 10']
-    },
-    { 
-        id: 6, 
-        name: 'Song 6', 
-        artist: 'Artist 6', 
-        genre: 'Genre 6', 
-        tags: ['Tag 11', 'Tag 12']
-    },
-    { 
-        id: 7, 
-        name: 'Song 7', 
-        artist: 'Artist 7', 
-        genre: 'Genre 7', 
-        tags: ['Tag 13', 'Tag 14']
-    },
-    { 
-        id: 8, 
-        name: 'Song 8', 
-        artist: 'Artist 8', 
-        genre: 'Genre 8', 
-        tags: ['Tag 15', 'Tag 16']
-    },
-    { 
-        id: 9, 
-        name: 'Song 9', 
-        artist: 'Artist 9', 
-        genre: 'Genre 9', 
-        tags: ['Tag 17', 'Tag 18']
-    },
-    { 
-        id: 10, 
-        name: 'Song 10', 
-        artist: 'Artist 10', 
-        genre: 'Genre 10', 
-        tags: ['Tag 19', 'Tag 20']
-    }
+    { id: 1, name: "Uusi teknokratia", artist: "Oranssi Pazuzu", genre: "Black Metal", tags: ["dark","hypnotic", "concept", "psychedelic"]},
+    { id: 2, name: "Cleansing", artist: "Wolves in the Throne Room", genre: "Black Metal", tags: ["dark", "heavy", "hypnotic", "forest"] },
+    { id: 3, name: "Freezing Moon", artist: "Mayem", genre: "Black Metal", tags: ["dark", "heavy", "aggressive", "winter"] },
+    { id: 4, name: "Dearth", artist: "Deathspell Omega", genre: "Black Metal", tags: ["dark", "heavy", "chaotic", "concept", "hypnotic"]},
+    { id: 5, name: "Blood Fire Death", artist: "Bathory", genre: "Black Metal", tags: ["dark", "heavy","aggressive", "pagan"]},
+    { id: 6, name: "Persephone", artist: "Cocteau Twins", genre: "Dream Pop", tags: ["ethereal", "dreamy", "atmospheric"]},
+    { id: 7, name: "Dagger", artist: "Slowdive", genre: "Dream Pop", tags: ["ethereal", "dreamy", "atmospheric"]},
+    { id: 8, name: "Sometimes", artist: "My Bloody Valentine", genre: "Dream Pop", tags: ["ethereal", "dreamy", "atmospheric"]},
+    { id: 9, name: "Space Song", artist: "Beach House", genre: "Dream Pop", tags: ["ethereal", "dreamy", "atmospheric"]},
+    { id: 10, name: "Falling", artist: "Julee Cruise", genre: "Dream Pop", tags: ["ethereal", "dreamy", "atmospheric", "hypnotic", "dark"]},
+    { id: 11, name: "Same Deep Water as You", artist: "The Cure", genre: "Gothic Rock", tags: ["dark", "melancholic", "atmospheric"]},
+    { id: 12, name: "Spellbound", artist: "Siouxsie and the Banshees", genre: "Gothic Rock", tags: ["dark", "melancholic", "atmospheric"]},
+    { id: 13, name: "Bela Lugosi's Dead", artist: "Bauhaus", genre: "Gothic Rock", tags: ["dark", "melancholic", "atmospheric"]},
+    { id: 14, name: "Lucretia My Reflection", artist: "The Sisters of Mercy", genre: "Gothic Rock", tags: ["dark", "melancholic", "atmospheric"]},
+    { id: 15, name: "Moonchild", artist: "Fields of the Nephilim", genre: "Gothic Rock", tags: ["dark", "melancholic", "atmospheric"]},
+    { id: 16, name: "I Know it's over", artist: "The Smiths", genre: "Indie Pop", tags: ["melancholic", "longing"]},
+    { id: 17, name: "She's My Baby", artist: "Mazzy Star", genre: "Dream Pop", tags: ["melancholic", "atmospheric", "psychedelic"]},
+    { id: 18, name: "A Forest", artist: "The Cure", genre: "Post Punk", tags: ["dark", "melancholic", "atmospheric"]},
+    { id: 19, name: "Love Will Tear Us Apart", artist: "Joy Division", genre: "Post Punk", tags: ["dark", "intense", "atmospheric"]},
+    { id: 20, name: "Transilvanian Hunger", artist: "Darkthrone", genre: "Black Metal", tags: ["dark", "raw", "atmospheric"] },
+    { id: 21, name: "I Am the Black Wizards", artist: "Emperor", genre: "Black Metal", tags: ["epic", "symphonic", "melodic"] },
+    { id: 22, name: "Funeral Fog", artist: "Mayhem", genre: "Black Metal", tags: ["iconic", "controversial", "raw"] },
+    { id: 23, name: "Dunkelheit", artist: "Burzum", genre: "Black Metal", tags: ["ambient", "experimental", "atmospheric"] },
+    { id: 24, name: "Hvis lyset tar oss", artist: "Burzum", genre: "Black Metal", tags: ["atmospheric", "raw", "contemplative"] },
 ]);
 
 const getRec = async () => {
