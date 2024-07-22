@@ -1,5 +1,12 @@
 {
   "compilerOptions": {
+    "module": "NodeNext", 
+    "moduleResolution": "NodeNext", 
+    "target": "es2019", 
+    "types": ["jquery"],
+    "lib": ["es2019", "dom"], 
+    "strict": true,
+    "esModuleInterop": true,
     "paths": {
       "@badeball/cypress-cucumber-preprocessor/*": [
         "./node_modules/@badeball/cypress-cucumber-preprocessor/dist/subpath-entrypoints/*"
@@ -24,5 +31,6 @@
     {
       "path": "./tsconfig.vitest.json"
     }
-  ]
+  ],
+  "exclude": ["node_modules"]
 }

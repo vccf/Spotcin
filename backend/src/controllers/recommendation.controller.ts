@@ -4,7 +4,7 @@ import RecommendationService from '../services/recommendation.service';
 import RecommendationEntity from '../entities/recommendation.entity'
 
 class RecommendationController {
-    private prefix: string = '/recommendations';
+    private prefix: string = '/:userId/recommendations';
     public router: Router;
     private recommendationService: RecommendationService;
   
@@ -17,25 +17,25 @@ class RecommendationController {
     private initRoutes() {
 
         // Route to generate recommendations
-        this.router.post('/recommendations/generate', (req: Request, res: Response) => {
+        this.router.post('/:userId/recommendations/playlist', (req: Request, res: Response) => {
             const { userId, userHistory } = req.body;
             const playlist = this.recommendationService.generateRecommendations(userId, userHistory);
             res.status(201).json(playlist);
         });
         // Route to get more recommendations
-        this.router.post('/recommendations/more', (req: Request, res: Response) => {
+        this.router.post('/:userId/recommendations/playlist/more', (req: Request, res: Response) => {
             const { userId, userHistory } = req.body;
             const playlist = this.recommendationService.getMoreRecommendations(userId, userHistory);
             res.status(200).json(playlist);
         });
         // Route to get recommendation history
-        this.router.get('/recommendations/history/:userId', (req: Request, res: Response) => {
+        this.router.get('/:userId/recommendations/history', (req: Request, res: Response) => {
             const userId = req.params.userId;
             const playlist = this.recommendationService.getRecommendationHistory(userId);
             res.status(200).json(playlist);
         });
         // Route to delete a recommended song
-        this.router.delete('/recommendations/:userId/:songIndex', (req: Request, res: Response) => {
+        this.router.delete('/:userId/recommendations/playlist/:songIndex', (req: Request, res: Response) => {
             const userId = req.params.userId;
             const songIndex = parseInt(req.params.songIndex, 10); // Convert string to number
             const result = this.recommendationService.deleteRecommendedSong(userId, songIndex);
@@ -46,7 +46,7 @@ class RecommendationController {
             }
         });
         // Route to check user listening history for recommendations
-        this.router.post('/recommendations/check', (req: Request, res: Response) => {
+        this.router.post('/:userId/recommendations/check', (req: Request, res: Response) => {
             const { userId, userHistory } = req.body;
             const errorMessage = this.recommendationService.checkUserListeningHistory(userId, userHistory);
             if (errorMessage) {

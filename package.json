@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "core-js": "^3.37.1",
+    "vue": "^3.4.33"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.3"
+  }
+}
