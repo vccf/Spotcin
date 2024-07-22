@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '../views/LoginView.vue'
 import CadastroView from '../views/CadastroView.vue'
-import MainPage from '../views/MainPage.vue'
+import MainPage from '../views/MainPageView.vue'
 import PlaylistsView from '../views/PlaylistsView.vue'
 import ToDoView from '../views/ToDoView.vue'
 import RecommendationsView from '../views/RecommendationsView.vue'

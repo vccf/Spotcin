@@ -14,19 +14,19 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 const viewRecentRecommendations = () => {
-    router.push('/user/recommendations/playlist');
+    router.push('/recommendations/playlist');
 };
 
 const generateRecommendationPlaylist = () => {
-    router.push('/user/recommendations/playlist');
+    router.push('/recommendations/playlist');
 };
 
 const viewRecommendationHistory = () => {
-    router.push('/user/recommendations/history');
+    router.push('/recommendations/history');
 };
 
 const viewMoreRecommendations = () => {
-    router.push('/user/recommendations/playlist/more');
+    router.push('/recommendations/playlist/more');
 };
 
 </script>

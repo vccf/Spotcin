@@ -4,9 +4,9 @@
         <p>Here are some recommendations for you:</p>
         <ul>
             <li v-for="song in playlist" :key="song.id">
+                <button class="purple-button" @click="playSong(song.id)">Play</button>
                 <p>{{ song.name }} - {{ song.artist }}</p>
-                <PlaySong/>
-                <Excluir/>
+                <button @click="removeSongFromPlaylist(song.id)">Remove Song</button>    
             </li>
         </ul>
         <button v-if="showLoadMoreButton" @click="loadMore">Ver mais</button>
@@ -197,6 +197,33 @@ const loadMore = async () => {
   } catch (error) {
     console.error('Failed to load more songs:', error);
   }
+};
+
+const playSong = (songId: number) => {
+  const song = playlist.value.find(song => song.id === songId);
+  if (song) {
+    console.log(`Playing ${song.name} - ${song.artist}`);
+    const audioPlayer = new Audio(); // Create a new audio player
+    fetch("https://example.com/api/songs/1")
+    .then(response => response.json())
+    .then(data => {
+      const song = data.song;
+      const audioPlayer = new Audio();
+      audioPlayer.src = song.url;
+      audioPlayer.play();})
+    .catch(error => {
+      console.error("Error fetching song:", error);
+    });
+  }
+}
+
+const removeSongFromPlaylist = (songId) => {
+    playlist.value = playlist.value.filter(song => song.id !== songId);
+    reloadRecommendationPlaylist(); //reload the page
+};
+      
+const reloadRecommendationPlaylist = () => {
+    router.push('/user/recommendations/playlist');
 };
 
 </script>
