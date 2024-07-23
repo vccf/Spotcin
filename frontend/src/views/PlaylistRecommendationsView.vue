@@ -6,10 +6,10 @@
             <li v-for="song in playlist" :key="song.id">
                 <button class="purple-button" @click="playSong(song.id)">Play</button>
                 <p>{{ song.name }} - {{ song.artist }}</p>
-                <button class="purple-button"@click="removeSongFromPlaylist(song.id)">Remove Song</button>    
+                <button class="purple-button"@click="removeSongFromPlaylist(song.id)">Delete</button>    
             </li>
         </ul>
-        <button class="ver-mais-button"showLoadMoreButton @click="loadMore">Ver mais</button>
+        <button class="purple-button" v-if="showLoadMoreButton" @click="loadMore">Ver mais</button>
         <VerMais/>
     </div>    
 </template>
@@ -83,27 +83,26 @@ const playlist = ref([
     { id: 2, name: "Cleansing", artist: "Wolves in the Throne Room", genre: "Black Metal", tags: ["dark", "heavy", "hypnotic", "forest"] },
     { id: 3, name: "Freezing Moon", artist: "Mayem", genre: "Black Metal", tags: ["dark", "heavy", "aggressive", "winter"] },
     { id: 4, name: "Dearth", artist: "Deathspell Omega", genre: "Black Metal", tags: ["dark", "heavy", "chaotic", "concept", "hypnotic"]},
-    { id: 5, name: "Blood Fire Death", artist: "Bathory", genre: "Black Metal", tags: ["dark", "heavy","aggressive", "pagan"]},
-    { id: 6, name: "Persephone", artist: "Cocteau Twins", genre: "Dream Pop", tags: ["ethereal", "dreamy", "atmospheric"]},
-    { id: 7, name: "Dagger", artist: "Slowdive", genre: "Dream Pop", tags: ["ethereal", "dreamy", "atmospheric"]},
-    { id: 8, name: "Sometimes", artist: "My Bloody Valentine", genre: "Dream Pop", tags: ["ethereal", "dreamy", "atmospheric"]},
-    { id: 9, name: "Space Song", artist: "Beach House", genre: "Dream Pop", tags: ["ethereal", "dreamy", "atmospheric"]},
-    { id: 10, name: "Falling", artist: "Julee Cruise", genre: "Dream Pop", tags: ["ethereal", "dreamy", "atmospheric", "hypnotic", "dark"]},
-    { id: 11, name: "Same Deep Water as You", artist: "The Cure", genre: "Gothic Rock", tags: ["dark", "melancholic", "atmospheric"]},
-    { id: 12, name: "Spellbound", artist: "Siouxsie and the Banshees", genre: "Gothic Rock", tags: ["dark", "melancholic", "atmospheric"]},
-    { id: 13, name: "Bela Lugosi's Dead", artist: "Bauhaus", genre: "Gothic Rock", tags: ["dark", "melancholic", "atmospheric"]},
-    { id: 14, name: "Lucretia My Reflection", artist: "The Sisters of Mercy", genre: "Gothic Rock", tags: ["dark", "melancholic", "atmospheric"]},
-    { id: 15, name: "Moonchild", artist: "Fields of the Nephilim", genre: "Gothic Rock", tags: ["dark", "melancholic", "atmospheric"]},
-    { id: 16, name: "I Know it's over", artist: "The Smiths", genre: "Indie Pop", tags: ["melancholic", "longing"]},
-    { id: 17, name: "She's My Baby", artist: "Mazzy Star", genre: "Dream Pop", tags: ["melancholic", "atmospheric", "psychedelic"]},
-    { id: 18, name: "A Forest", artist: "The Cure", genre: "Post Punk", tags: ["dark", "melancholic", "atmospheric"]},
-    { id: 19, name: "Love Will Tear Us Apart", artist: "Joy Division", genre: "Post Punk", tags: ["dark", "intense", "atmospheric"]},
+    { id: 23, name: "Dunkelheit", artist: "Burzum", genre: "Black Metal", tags: ["ambient", "experimental", "atmospheric"] },
+]);
+
+const playlistExpanded = ref([
+    { id: 25, name: "Dead as Dreams", artist: "Weakling", genre: "Black Metal", tags: ["dark", "heavy", "aggressive", "melancholic", "winter", "atmospheric"]},
+    { id: 27, name: "Chorea Macchabeorum", artist: "Blut aus Nord", genre: "Black Metal", tags: ["dark", "heavy", "aggressive", "winter", "atmospheric"]},
+    { id: 28, name: "Maze of Phobetor", artist: 'Akhlys', genre: "Black Metal", tags: ["dark", "heavy", "chaotic", "concept", "hypnotic"]},
+    { id: 29, name: "Exercises in Futility V", artist: "Mgla", genre: "Black Metal", tags: ["dark", "heavy", "aggressive", "winter", "atmospheric"]},
+    { id: 30, name: "A Fine Day to Die", artist: "Bathory", genre: "Black Metal", tags: ["aggressive", "heavy", "dark", "pagan"]},
+]);
+
+const secPlaylistExpanded = ref([
+    { id: 5, name: "Blood Fire Death", artist: "Bathory", genre: "Black Metal", tags: ["dark", "heavy","aggressive", "pagan"]},  
     { id: 20, name: "Transilvanian Hunger", artist: "Darkthrone", genre: "Black Metal", tags: ["dark", "raw", "atmospheric"] },
     { id: 21, name: "I Am the Black Wizards", artist: "Emperor", genre: "Black Metal", tags: ["epic", "symphonic", "melodic"] },
     { id: 22, name: "Funeral Fog", artist: "Mayhem", genre: "Black Metal", tags: ["iconic", "controversial", "raw"] },
-    { id: 23, name: "Dunkelheit", artist: "Burzum", genre: "Black Metal", tags: ["ambient", "experimental", "atmospheric"] },
-    { id: 24, name: "Hvis lyset tar oss", artist: "Burzum", genre: "Black Metal", tags: ["atmospheric", "raw", "contemplative"] },
+    { id: 26, name: "Neither Meaning nor Justice", artist: "Deathspell Omega", genre: "Black Metal", tags: ["dark", "heavy", "chaotic", "concept", "hypnotic"]},
 ]);
+
+const showLoadMoreButton = ref(true); // Show "Ver mais" button initially
 
 const getRec = async () => {
     try {
@@ -155,11 +154,11 @@ const getMoreRec = async () => {
     }
 };
 
-const showLoadMoreButton = ref(true);
+//const showLoadMoreButton = ref(true);
 
 //const loadMore = () => {};
 
-const loadMore = async () => {
+/*const loadMore = async () => {
   try {
     const moreSongs = await getMoreRec(); // Assuming getMoreRec is an API function to fetch more songs
     //const additionalSongs = moreSongs.slice(0, 5); // Get the next 5 songs
@@ -168,7 +167,7 @@ const loadMore = async () => {
   } catch (error) {
     console.error('Failed to load more songs:', error);
   }
-};
+};*/
 
 const playSong = (songId: number) => {
   const song = playlist.value.find(song => song.id === songId);
@@ -194,7 +193,25 @@ const removeSongFromPlaylist = (songId) => {
 };
       
 const reloadRecommendationPlaylist = () => {
-    router.push('/user/recommendations/playlist');
+    router.push('/recommendations/playlist');
+};
+
+let loadMoreCounter = 0;
+
+const loadMore = () => {
+    loadMoreCounter++;
+    if (loadMoreCounter === 1) {
+        playlist.value = [...playlist.value, ...playlistExpanded.value];
+        reloadRecommendationPlaylist();
+    } else if (loadMoreCounter === 2) {
+        loadMoreTwice();
+    }
+};
+
+const loadMoreTwice = () => {
+    playlist.value = [...playlist.value, ...secPlaylistExpanded.value];
+    reloadRecommendationPlaylist();
+    showLoadMoreButton.value = false; //button Ver mais disappears after loading more
 };
 
 </script>

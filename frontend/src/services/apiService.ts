@@ -93,9 +93,9 @@ export function useApiService() {
     }
   }
   async function deleteSongFromPlaylist (data: any) {
-    const endpoint = `${baseUrl}/user/recommendations/playlist/songId`;
+    const endpoint = `${baseUrl}/user/recommendations/playlist/songId/${data.songId}`;
     try {
-      const response = await axios.delete(endpoint);
+      const response = await axios.delete(endpoint, data);
       console.log('Song deleted from playlist successfully');
       return response.data;
     } catch (error) {
