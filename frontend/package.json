@@ -17,7 +17,7 @@
     "@badeball/cypress-cucumber-preprocessor": "^15.1.5",
     "@bahmutov/cypress-esbuild-preprocessor": "^2.2.0",
     "@cypress/code-coverage": "^3.10.8",
-    "axios": "^1.4.0",
+    "axios": "^1.7.2",
     "pinia": "^2.1.4",
     "vue": "^3.4.33",
     "vue-router": "^4.4.0"

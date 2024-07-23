@@ -39,7 +39,7 @@ export function useApiService() {
   }
 
   async function getRecommendations(data: any) {
-    const endpoint = `${baseUrl}/user/recommendations/playlist-recommendations`;
+    const endpoint = `${baseUrl}/user/recommendations/playlist`;
     try {
       const response = await axios.post(endpoint, data);
       return response.data;
@@ -50,7 +50,7 @@ export function useApiService() {
   }
 
   async function getSong(){
-    const endpoint = `${baseUrl}/user/recommendations/playlist-recommendations`;
+    const endpoint = `${baseUrl}/user/recommendations/playlist`;
     try {
       const response = await axios.get(endpoint);
       return response.data;
@@ -61,7 +61,7 @@ export function useApiService() {
   }
 
   async function deleteSong(data: any) {
-    const endpoint = `${baseUrl}/user/recommendations/playlist-recommendations`;
+    const endpoint = `${baseUrl}/user/recommendations/playlist/${data.id}`;
     try {
       const response = await axios.post(endpoint, data);
       return response.data;
@@ -92,6 +92,17 @@ export function useApiService() {
       throw error;
     }
   }
+  async function deleteSongFromPlaylist (data: any) {
+    const endpoint = `${baseUrl}/user/recommendations/playlist/songId`;
+    try {
+      const response = await axios.delete(endpoint);
+      console.log('Song deleted from playlist successfully');
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
 
   return {
     fetchData,
@@ -100,6 +111,7 @@ export function useApiService() {
     getRecommendations,
     deleteSong,
     getMoreRecommendations,
-    getHistoryRecommendations
+    getHistoryRecommendations, 
+    deleteSongFromPlaylist
   };
 }

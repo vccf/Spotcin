@@ -41,7 +41,7 @@ const login = async () => {
         }
     } catch (error) {
         console.error('Erro ao logar usuário:', error);
-        showErrorOnForm(error.response.data.msg);
+        //showErrorOnForm(error.response.data.msg);
     }
 };
 
@@ -59,7 +59,7 @@ const showErrorOnForm = (error: string) => {
     const errorElement = document.createElement('p');
     errorElement.textContent = error;
     errorElement.style.color = 'red';
-    form.appendChild(errorElement);
+    //form.appendChild(errorElement);
     setTimeout(() => {
         errorElement.remove();
     }, 3000);
