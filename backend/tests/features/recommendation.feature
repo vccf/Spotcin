@@ -1,13 +1,13 @@
 Feature: Recommendations by user history
 Scenario: Gerar lista de recomendações
-Given A usuária com id “Victória” está no sistema 
+Given A usuária "Victória" está no sistema 
 When uma requisição "POST" for enviada para "/recommendations/generate"
 Then o status da resposta deve ser "201"
 And o JSON da resposta deve ser uma playlist de músicas
-And as músicas “Ride-Lana Del Rey”, “Age of Love-Charlotte de Witte”, “Legacy-Sara Landry”, “Dori Me-Deborah de Luca”, “Metal Heart-Cat Powd﻿er” estão na playlist
+And as músicas "Ride-Lana Del Rey", "Age of Love-Charlotte de Witte", "Legacy-Sara Landry", "Dori Me-Deborah de Luca", "Metal Heart-Cat Powder" estão na playlist
 
 Scenario: Excluir música(s) das recomendadas
-Given A usuária com id “Victória” está no sistema 
+Given A usuária com id "Victória" está no sistema 
 And a playlist “Músicas recomendadas” associada a usuária com id “Victória” tem as músicas “Ride-Lana Del Rey”, “Age of Love-Charlotte de Witte”, “Legacy-Sara Landry”, “Dori Me-Deborah de Luca”, “Metal Heart-Cat Pow﻿der”
 When uma requisição "DELETE" for enviada para "/recommendations/Victoria/Ride-Lana Del Rey"
 Then o status da resposta deve ser "200"
