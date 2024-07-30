@@ -73,18 +73,21 @@ class RecommendationController {
             //console.log(userId)
             //console.log(userHistory)
             const playlist = await this.getRecs (req, res);
+            return res.send(playlist).status(200);
         });
         // Route to get more recommendations
         this.router.post('/recommendations/playlist/more', async (req: Request, res: Response) => {
             //const { userId, userHistory } = req.body;
             //const playlist = await this.getMoreRecs(userId, userHistory);
             const playlist = await this.getMoreRecs(req, res);
+            return res.send(playlist).status(200);
         });
         // Route to get recommendation history
         this.router.get('/recommendations/history', async (req: Request, res: Response) => {
             //const { userId, userHistory } = req.body;
             //const playlist = await this.getHistRec(userId, userHistory); //Ver se está certo
             const playlist = await this.getHistRec(req, res);
+            //return res.send(playlist).status(200);
         });
 
         // Route to delete a recommended song
@@ -92,12 +95,14 @@ class RecommendationController {
             //const { userId, songIndex } = req.body;
             //const result = await this.deleteOneRec(userId, songIndex);
             const result = await this.deleteOneRec(req, res);
+            return res.send(result).status(400);
         });
         // Route to check user listening history for recommendations
         this.router.post('/recommendations/check', async (req: Request, res: Response) => {
             //const { userId, userHistory } = req.body;
             //const errorMessage = await this.checkUserHistory(userId, userHistory);
             const errorMessage=await this.checkUserHistory(req, res);
+            //return res.send(errorMessage).status(400);
         });
     }
 
@@ -105,13 +110,16 @@ class RecommendationController {
         await this.recommendationService.checkUserHistory();
         return new SuccessResult({
             msg: 'User history checked successfully',
+            data: RecommendationEntity,
         }).handle(res);
+        return res.send('User history checked successfully').status(200);
     }
 
     public async getRecs(req: Request, res: Response){
         await this.recommendationService.getRecs();
         return new SuccessResult({
             msg: Result.transformRequestOnMsg(req),
+            data: RecommendationEntity,
         }).handle(res);
     }
 
@@ -119,6 +127,7 @@ class RecommendationController {
         await this.recommendationService.getMoreRecs();
         return new SuccessResult({
             msg: Result.transformRequestOnMsg(req),
+            data: RecommendationEntity,
         }).handle(res);
     }
 
@@ -126,7 +135,9 @@ class RecommendationController {
         await this.recommendationService.getHistRec();
         return new SuccessResult({
             msg: Result.transformRequestOnMsg(req),
+            data: RecommendationEntity,
         }).handle(res);
+        return res.send(RecommendationEntity).status(200);
     }
 
     public async deleteOneRec (req: Request, res: Response){
@@ -134,6 +145,7 @@ class RecommendationController {
         await this.recommendationService.deleteOneRec(song);
         return new SuccessResult({
             msg: Result.transformRequestOnMsg(req),
+            data: RecommendationEntity,
         }).handle(res);
     }
 
