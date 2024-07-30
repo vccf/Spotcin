@@ -173,6 +173,56 @@ class RecommendationRepository extends BaseRepository<RecommendationEntity> {
             throw new InternalServerError();
         }
     }
+
+    public async checkUserListeningHistory(userId: string, userHistory: SongEntity[]): Promise<void> {
+        try {
+            if (userHistory.length === 0 || userHistory.length < 5) {
+                throw new Error('No listened songs found');
+            }
+            this.recs.userId = userId;
+            this.recs.listenedSongs = userHistory;
+        } catch (e) {
+            throw new InternalServerError();
+        }
+    }
+
+    public async getMoreRecommendations(userId: string): Promise<SongEntity[]> {
+        try {
+            const userHistory = this.getUserHistory();
+            await this.checkUserListeningHistory(userId, userHistory);
+            const listenedSongs = this.recs.listenedSongs;
+            const recommendedSongs = await this.getRecommendedSongs(listenedSongs);
+            const recommendation = new RecommendationEntity({
+                userId,
+                listenedSongs,
+                recommendedSongs,
+                recommendationHistory: [],
+            });
+            await this.createOrUpdateRecommendation(recommendation);
+            return recommendedSongs;
+        } catch (e) {
+            throw new InternalServerError();
+        }
+    }
+
+    public async getMoreRecommendationsDouble(userId: string): Promise<SongEntity[]> {
+        try {
+            const userHistory = this.getUserHistory();
+            await this.checkUserListeningHistory(userId, userHistory);
+            const listenedSongs = this.recs.listenedSongs;
+            const recommendedSongs = await this.getRecommendedSongs(listenedSongs);
+            const recommendation = new RecommendationEntity({
+                userId,
+                listenedSongs,
+                recommendedSongs,
+                recommendationHistory: [],
+            });
+            await this.createOrUpdateRecommendation(recommendation);
+            return recommendedSongs;
+        } catch (e) {
+            throw new InternalServerError();
+        }
+    }
 }
 
 export default RecommendationRepository;

@@ -36,11 +36,13 @@ defineFeature(feature, (test) => {
                 { id: '5', idSong: 5, name: 'Metal Heart', artist: 'Cat Power', genre: "Slowcore", tags: ["female", "melancholic", "dark", "hypnotic"]}
             );
             await mockRecommendationRepository.createOrUpdateRecommendation(mockRecommendationEntity);
-            response = await request.get('/recommendations/generate').query({ userId: mockRecommendationEntity.userId });
+            //response = await request.get('/recommendations/generate').query({ userId: mockRecommendationEntity.userId });
+            response = await request.get('/recommendations/playlist').query({ userId: mockRecommendationEntity.userId });
+            console.log(response.body);
         });
 
         then(/^o status da resposta deve ser "(.*)"$/, (statusCode) => {
-            expect(response.status).toBe(200);
+            expect(response.status).toBe(parseInt(statusCode)); //200
         });
 
         and (/^o JSON da resposta deve ser uma playlist de músicas$/, () => {
@@ -63,6 +65,7 @@ defineFeature(feature, (test) => {
             expect(playlist).toContainEqual({ name: 'Legacy', artist: 'Sara Landry' });
             expect(playlist).toContainEqual({ name: 'Dori Me', artist: 'Deborah de Luca' });
             expect(playlist).toContainEqual({ name: 'Metal Heart', artist: 'Cat Powder' });
+            console.log(response.body);
         });
     });
 
@@ -101,11 +104,13 @@ defineFeature(feature, (test) => {
     
         when(/^uma requisição "(.*)" for enviada para "(.*)" com o corpo da requisição sendo um JSON com a música "(.*)"$/, 
             async (DELETE, url, songToRemove) => {
-            response = await request.delete(`/recommendations/${mockRecommendationEntity.userId}/delete/${songToRemove}`);
+            //response = await request.delete(`/recommendations/${mockRecommendationEntity.userId}/delete/${songToRemove}`);
+            response = await request.delete(`/recommendations/playlist/${songToRemove}`);
+            console.log(response.body);
         });
     
         then(/^o status da resposta deve ser "(.*)"$/, (statusCode) => {
-            expect(response.status).toBe(200);
+            expect(response.status).toBe(parseInt(statusCode)); //200
         });
 
         and(/^o JSON da resposta deve ser uma playlist de músicas$/, () => {
@@ -165,7 +170,9 @@ defineFeature(feature, (test) => {
             mockRecommendationEntity.recommendedSongs.push(...newSongs);
             await mockRecommendationRepository.createOrUpdateRecommendation(mockRecommendationEntity);
     
-            response = await request.put(`/recommendations/${mockRecommendationEntity.userId}/more`);
+            //response = await request.put(`/recommendations/${mockRecommendationEntity.userId}/more`);
+            response = await request.post(`/recommendations/playlist/more`);
+            console.log(response.body);
 
             const updatedPlaylist = await mockRecommendationRepository.getRecommendationByUserId(mockRecommendationEntity.userId);
             expect(updatedPlaylist).toBeDefined();
@@ -173,8 +180,8 @@ defineFeature(feature, (test) => {
             
         });
 
-        then(/^o status da resposta deve ser "(.*)"$/, (arg0) => {
-            expect(response.status).toBe(200);
+        then(/^o status da resposta deve ser "(.*)"$/, (statusCode) => {
+            expect(response.status).toBe(parseInt(statusCode)); 200
         });
 
         and('o JSON da resposta deve ser uma playlist de músicas', () => {
@@ -212,10 +219,11 @@ defineFeature(feature, (test) => {
 
         when(/^uma requisição "(.*)" for enviada para "(.*)"$/, async (POST, url) => {
             response = await request.get('/recommendations/generate').query({ userId: mockRecommendationEntity.userId });
+            console.log(response.body);
         });
 
         then (/^o status da resposta deve ser "(.*)"$/, (statusCode) => {
-            expect(response.status).toBe(400);
+            expect(response.status).toBe(parseInt(statusCode)); //400
         });
 
 
@@ -247,11 +255,13 @@ defineFeature(feature, (test) => {
         });
 
         when(/^uma requisição "(.*)" for enviada para "(.*)"$/, async (GET, url) => {
-            response = await request.get(`/recommendations/${mockRecommendationEntity.userId}/history`);
+            //response = await request.get(`/recommendations/${mockRecommendationEntity.userId}/history`);
+            response = await request.get(`/recommendations/history`);
+            console.log(response.body);
         });
 
         then(/^o status da resposta deve ser "(.*)"$/, (statusCode) => {
-            expect(response.status).toBe(200);
+            expect(response.status).toBe(parseInt(statusCode)); //200
         });
 
         and (/^o JSON da resposta deve ser uma playlist de músicas$/, () => {

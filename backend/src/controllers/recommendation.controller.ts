@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express'; // Assuming you're using Express for your application
 import { InternalServerError, NotFoundError } from '../utils/errors/http.error'; // Custom error handling if applicable
+import { Result, SuccessResult } from '../utils/result';
 import RecommendationService from '../services/recommendation.service';
 import RecommendationEntity from '../entities/recommendation.entity'
 
@@ -105,18 +106,25 @@ class RecommendationController {
         try {
             await this.recommendationService.deleteRecommendedSong(userId, +songIndex); // Convert songIndex to number
             res.status(204).send();
+            console.log('Song deleted successfully');
         } catch (e) {
             console.error(e);
             res.status(500).json({ error: 'Internal Server Error' });
         }
     };
 
-    public checkUserListeningHistory = async (req: Request, res: Response): Promise<void> => {
+    //public checkUserListeningHistory = async (req: Request, res: Response): Promise<void> => {
+    public checkUserListeningHistory = async (req: Request, res: Response) =>{
         const { userId } = req.params;
         const { userHistory } = req.body; // Assuming the body contains userHistory array
-        try {
-            const errorMessage = await this.recommendationService.checkUserListeningHistory(userId, userHistory);
-            if (errorMessage) {
+        //try {
+            //const errorMessage = await this.recommendationService.checkUserListeningHistory(userId, userHistory);
+            await this.recommendationService.checkUserListeningHistory(userId, userHistory);
+            return new SuccessResult({
+                msg: Result.transformRequestOnMsg(req),
+            }).handle(res);
+
+            /*if (errorMessage) {
                 res.status(400).json({ error: errorMessage });
             } else {
                 res.status(200).json({ message: 'User listened enough songs for recommendations' });
@@ -124,7 +132,7 @@ class RecommendationController {
         } catch (e) {
             console.error(e);
             res.status(500).json({ error: 'Internal Server Error' });
-        }
+        }*/
     };
 }
 

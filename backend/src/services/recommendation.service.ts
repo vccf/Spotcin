@@ -3,6 +3,7 @@ import PlaylistEntity from '../entities/playlist.entity';
 import RecommendationRepository from '../repositories/recommendation.repository';
 import SongEntity from '../entities/song.entity';
 import SongRepository from '../repositories/song.repository';
+import { NotFoundError, InternalServerError } from '../utils/errors/http.error';
 
 /*class Song {
     id: number;
@@ -11,6 +12,15 @@ import SongRepository from '../repositories/song.repository';
     genre?: string;
     tags?: string[];
 }*/
+
+class RecommendationServiceMessageCode {
+    public static readonly not_listened_enough_songs = 'not_listened_enough_songs';
+    public static readonly filter_songs_error = 'filter_songs_error';
+    public static readonly generate_rec_playlist_error = 'playlist_creation_error';
+    public static readonly see_rec_history_error = 'see_rec_history_error';
+    public static readonly see_more_rec_error = 'see_more_rec_error';
+    public static readonly delete_song_error = 'delete_song_error';
+}
 
 class RecommendationService {
     //private recommendations: RecommendationEntity[];
@@ -107,6 +117,7 @@ class RecommendationService {
                 songs: this.getSongNames(recommendedSongs),
                 categories: ['Recommendations'],
             });*/
+            console.log('Sucessfully generated recommendations');
             return this.recPlay;
         } catch (error) {
             console.error("Error in getMoreRecommendations:", error);
@@ -145,6 +156,7 @@ return new PlaylistEntity({
                 filteredSongs.push(song);
             }
         }
+        console.log('Sucessfully generated recommendations');
         return filteredSongs.slice(0, 5);
     }
 
@@ -164,7 +176,7 @@ return new PlaylistEntity({
             if (existingRecommendation) {
                 await this.recommendations.updateRecommendationByUserId(existingRecommendation, userId);
             }
-
+            console.log('Sucessfully generated recommendations');
             return recommendedSongs;
         } catch (error) {
             console.error("Error in getFilteredSongs:", error);
@@ -189,6 +201,7 @@ return new PlaylistEntity({
                 await this.recommendations.updateRecommendationByUserId(existingRecommendation, userId);
             }
 
+            console.log('Sucessfully generated more recommendations');
             return recommendedSongs;
         } catch (error) {
             console.error("Error in getMoreRecommendations:", error);
@@ -245,7 +258,9 @@ return new PlaylistEntity({
                     //songs: this.getSongNames(existingRecommendation.recommendationHistory),
                     categories: ['Recommendations'],
                 });*/
-                return this.recPlay;
+                console.log('Sucessfully got recommendation history');
+                return this.getRecommendationHistory(userId);
+                //return this.recPlay;
             }
 
             /*return new PlaylistEntity({
@@ -280,7 +295,10 @@ return new PlaylistEntity({
                     //songs: this.getSongNames(existingRecommendation.recommendedSongs),
                     categories: ['Recommendations'],
                 });*/
-                return [
+                (await currPlay).filter(song => song.id !== deletedSong.id);
+                console.log('Sucessfully deleted recommended song');
+                return currPlay;
+                 /*[
                     {
                         id: '1',
                         idSong: 1,
@@ -291,8 +309,7 @@ return new PlaylistEntity({
                     },
                     {
                         id: '2',
-                        idSong: 2,
-                        name: 'Song2',
+                              throw new Error(             name: 'Song2',
                         artist: 'artist',
                         genre: 'Rock',
                         tags: []
@@ -321,7 +338,7 @@ return new PlaylistEntity({
                         genre: 'R&B',
                         tags: []
                     }
-                ];
+                ];*/
             }
 
             return 'Invalid song index or no recommendations found.';
@@ -332,11 +349,14 @@ return new PlaylistEntity({
     }
 
     // Method to check if user listened enough songs for recommendations
-    checkUserListeningHistory(userId: string, userHistory: string[]): string | null {
-        if (userHistory == null || userHistory.length < 5) {
-            return "You didn't listen to enough songs to be recommended new ones.";
+    async checkUserListeningHistory(userId: string, userHistory: SongEntity[]): Promise<void> {
+        if (!userHistory|| userHistory.length < 5) {
+            throw new NotFoundError ({
+                msg: 'You did not listen to enough songs to be recommended new ones',
+                msgCode: RecommendationServiceMessageCode.not_listened_enough_songs,
+            });
         }
-        return null;
+        console.log('User listened enough songs for recommendations');
     }
 }
 

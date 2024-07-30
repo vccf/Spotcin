@@ -16,6 +16,15 @@ class SongRepository extends BaseRepository<SongEntity> {
         }
     }
 
+    public async getSongById(id: string): Promise<SongEntity | null> { // Method to get a song by its id
+        try {
+            const song = await this.findOne((item) => item.id === id);
+            return song;
+        } catch (e) {
+            throw new InternalServerError();
+        }
+    }
+
     public filterSongsByGenreAndTags(allSongs: SongEntity[], filterSongs: SongEntity[]): SongEntity[] {
         const filteredSongs: SongEntity[] = [];
 
