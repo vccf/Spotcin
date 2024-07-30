@@ -166,7 +166,7 @@ class RecommendationRepository extends BaseRepository<RecommendationEntity> {
         }
     }
 
-    public async createRec (userId: string): Promise <RecommendationEntity | undefined> {
+    public async createRec (userId: string): Promise <RecommendationEntity> {
         try {
             return new RecommendationEntity({ 
                 userId: userId, 
@@ -179,7 +179,7 @@ class RecommendationRepository extends BaseRepository<RecommendationEntity> {
         }
     }
 
-    public async updateRec (rec: RecommendationEntity, upPlay: SongEntity[]): Promise<RecommendationEntity | undefined> {
+    public async updateRec (rec: RecommendationEntity, upPlay: SongEntity[]): Promise<RecommendationEntity> {
         try {
             const newRecPlay = [...rec.recommendedSongs, ...upPlay];
             const newHistPlay = [...rec.recommendationHistory, ...upPlay];

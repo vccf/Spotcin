@@ -44,7 +44,7 @@ defineFeature(feature, (test) => {
             await mockRecommendationRepository.updateRec(mockRecommendationEntity, newRecs);
             await mockRecommendationRepository.getMoreRecs();
             response = await request.post('/recommendations/playlist');
-            console.log(response.body);
+            console.log('Playlist Rec', response.body);
         });
 
         then(/^o status da resposta deve ser "(.*)"$/, (statusCode) => {
@@ -76,7 +76,7 @@ defineFeature(feature, (test) => {
             expect(playlist).toContainEqual({ name: 'Legacy', artist: 'Sara Landry' });
             expect(playlist).toContainEqual({ name: 'Dori Me', artist: 'Deborah de Luca' });
             expect(playlist).toContainEqual({ name: 'Metal Heart', artist: 'Cat Powder' });
-            console.log(response.body);
+            console.log('Play Rec 2', response.body);
         });
     });
 
@@ -126,7 +126,7 @@ defineFeature(feature, (test) => {
             async (DELETE, url, songToRemove) => {
             //response = await request.delete(`/recommendations/${mockRecommendationEntity.userId}/delete/${songToRemove}`);
             response = await request.delete(`/recommendations/playlist/${songToRemove}`);
-            console.log(response.body);
+            console.log('Deleting Rec', response.body);
         });
     
         then(/^o status da resposta deve ser "(.*)"$/, (statusCode) => {
@@ -259,8 +259,9 @@ defineFeature(feature, (test) => {
         });
 
         when(/^uma requisição "(.*)" for enviada para "(.*)"$/, async (POST, url) => {
-            response = await request.get('/recommendations/generate').query({ userId: mockRecommendationEntity.userId });
-            console.log(response.body);
+            //response = await request.get('/recommendations/generate').query({ userId: mockRecommendationEntity.userId });
+            response= await request.get('recommendations/check');
+                console.log('No enough rec', response.body);
         });
 
         then (/^o status da resposta deve ser "(.*)"$/, (statusCode) => {
