@@ -140,7 +140,7 @@ class RecommendationService {
         return await this.recommendations.checkUserHistory();
     }
 
-    public async getRecs(): Promise<SongEntity[]> {
+    public async getRecs(): Promise<RecommendationEntity> {
         const recEn = await this.recEntity.listenedSongs.length
         const recs = await this.recommendations
         if (recEn === 0) {
@@ -149,7 +149,7 @@ class RecommendationService {
         return await this.recommendations.getRecs();
     }
 
-    public async getMoreRecs(): Promise<SongEntity[]> {
+    public async getMoreRecs(): Promise<RecommendationEntity> {
         const recEn = await this.recEntity.recommendedSongs.length
         const recs = await this.recommendations
         if (recEn === 0) {
@@ -158,7 +158,7 @@ class RecommendationService {
         return await this.recommendations.getMoreRecs();
     }
 
-    public async getHistRec (): Promise<SongEntity[]> {
+    public async getHistRec (): Promise<RecommendationEntity> {
         const recEn = await this.recEntity.recommendationHistory.length
         const recs = await this.recommendations
         if (recEn === 0) {

@@ -118,6 +118,14 @@ class RecommendationRepository extends BaseRepository<RecommendationEntity> {
         { id: '26', idSong: 26, name: "Neither Meaning nor Justice", artist: "Deathspell Omega", genre: "Black Metal", tags: ["dark", "heavy", "chaotic", "concept", "hypnotic"]},
     ];
 
+    mockRec = new RecommendationEntity({ 
+        userId: 'user1', 
+        listenedSongs: [], 
+        recommendedSongs: [], 
+        recommendationHistory: []});
+
+    userId1 = 'user1';
+
     public async checkUserHistory(): Promise<void> {
         try {
             if (this.userHistory.length === 0 || this.userHistory.length < 5) {
@@ -130,28 +138,40 @@ class RecommendationRepository extends BaseRepository<RecommendationEntity> {
         }
     }
 
-    public async getRecs(): Promise<SongEntity[]> {
+    public async getRecs(): Promise<RecommendationEntity> {
         try {
             //this.recommendationHistory = this.playlistRec;
-            return this.playlistRec;
+            return new RecommendationEntity({ 
+                userId: this.userId1, 
+                listenedSongs: [], 
+                recommendedSongs: this.playlistRec, 
+                recommendationHistory: this.playlistRec});
         } catch (e) {
             throw new InternalServerError();
         }
     }
 
-    public async getMoreRecs(): Promise<SongEntity[]> {
+    public async getMoreRecs(): Promise<RecommendationEntity> {
         try {
             const newPlaylist = [...this.playlistRec, ...this.playlistRecExpanded];
-            return newPlaylist;
+            return new RecommendationEntity({ 
+                userId: this.userId1, 
+                listenedSongs: [], 
+                recommendedSongs: newPlaylist, 
+                recommendationHistory: newPlaylist});
         } catch (e) {
             throw new InternalServerError();
         }
     }
 
-    public async getHistRec (): Promise<SongEntity[]> {
+    public async getHistRec (): Promise<RecommendationEntity> {
         try {
             const newPlaylist = [...this.playlistRec, ...this.playlistRecExpanded];
-            return newPlaylist;
+            return new RecommendationEntity({
+                userId: this.userId1, 
+                listenedSongs: this.userHistory, 
+                recommendedSongs: newPlaylist, 
+                recommendationHistory: newPlaylist});
         } catch (e) {
             throw new InternalServerError();
         }

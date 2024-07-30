@@ -67,29 +67,37 @@ class RecommendationController {
         /*});*/
         // Route to generate recommendations
         this.router.post('/recommendations/playlist', async (req: Request, res: Response) => {
-            const { userId, userHistory } = req.body;
-            const playlist = await this.getRecs(userId, userHistory);
+            //const { userId, userHistory } = req.body;
+            //const playlist = await this.getRecs(userId, userHistory);
+            //console.log(req.body)
+            //console.log(userId)
+            //console.log(userHistory)
+            const playlist = await this.getRecs (req, res);
         });
         // Route to get more recommendations
         this.router.post('/recommendations/playlist/more', async (req: Request, res: Response) => {
-            const { userId, userHistory } = req.body;
-            const playlist = await this.getMoreRecs(userId, userHistory);
+            //const { userId, userHistory } = req.body;
+            //const playlist = await this.getMoreRecs(userId, userHistory);
+            const playlist = await this.getMoreRecs(req, res);
         });
         // Route to get recommendation history
         this.router.get('/recommendations/history', async (req: Request, res: Response) => {
-            const { userId, userHistory } = req.body;
-            const playlist = await this.getHistRec(userId, userHistory); //Ver se está certo
+            //const { userId, userHistory } = req.body;
+            //const playlist = await this.getHistRec(userId, userHistory); //Ver se está certo
+            const playlist = await this.getHistRec(req, res);
         });
 
         // Route to delete a recommended song
         this.router.delete('/recommendations/playlist/:songIndex', async (req: Request, res: Response) => {
-            const { userId, songIndex } = req.body;
-            const result = await this.deleteOneRec(userId, songIndex);
+            //const { userId, songIndex } = req.body;
+            //const result = await this.deleteOneRec(userId, songIndex);
+            const result = await this.deleteOneRec(req, res);
         });
         // Route to check user listening history for recommendations
         this.router.post('/recommendations/check', async (req: Request, res: Response) => {
-            const { userId, userHistory } = req.body;
-            const errorMessage = await this.checkUserHistory(userId, userHistory);
+            //const { userId, userHistory } = req.body;
+            //const errorMessage = await this.checkUserHistory(userId, userHistory);
+            const errorMessage=await this.checkUserHistory(req, res);
         });
     }
 

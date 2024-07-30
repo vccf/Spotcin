@@ -1,6 +1,7 @@
 import BaseModel from './base.model';
+import SongEntity from '../entities/song.entity';
 
-class Song {
+/*class Song {
     id: number;
     name: string;
     artist: string;
@@ -14,13 +15,13 @@ class Song {
         this.genre = genre;
         this.tags = tags;
     }
-}
+}*/
 
 class RecommendationModel extends BaseModel {
     userId: string;
-    listenedSongs: Song [];
-    recommendedSongs: Song[];
-    recommendationHistory: Song[];
+    listenedSongs: SongEntity [];
+    recommendedSongs: SongEntity[];
+    recommendationHistory: SongEntity[];
 
     constructor({
         id,
@@ -31,9 +32,9 @@ class RecommendationModel extends BaseModel {
     }: {
         id: string;
         userId: string;
-        listenedSongs?: Song[];
-        recommendedSongs?: Song[];
-        recommendationHistory?: Song[];
+        listenedSongs: SongEntity[];
+        recommendedSongs: SongEntity[];
+        recommendationHistory: SongEntity[];
     }) {
         super(id);
         this.userId = userId;
