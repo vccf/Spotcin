@@ -34,8 +34,12 @@ class RecommendationService {
         return await this.songs.getAllSongs();
     }
 
+    recPlay=this.filterSongsByGenreAndTags([{ id: '1', idSong: 1, name: 'Song1', artist: 'artist', genre: 'Pop', tags:[]}], [{ id: '1', idSong: 1, name: 'Song1', artist: 'artist', genre: 'Pop', tags:[]}])
+
     // Method to generate recommended songs based on user's listening history
-    async generateRecommendations(userId: string, userHistory: SongEntity[]): Promise<PlaylistEntity | string> {
+    //async generateRecommendations(userId: string, userHistory: SongEntity[]): Promise<PlaylistEntity | string> {
+    async generateRecommendations(userId: string, userHistory: SongEntity[]): Promise<SongEntity[] | string> {
+        
         try {
             const recommendedSongs = userHistory.slice(0, 5); // Recommend first 5 songs
 
@@ -48,12 +52,13 @@ class RecommendationService {
 
             this.recommendations.add(recommendation);
 
-            return new PlaylistEntity({
+            /*return new PlaylistEntity({
                 name: 'Recommended songs',
                 description: 'Playlist of recommended songs based on your listening history.',
                 songs: this.getSongNames(recommendedSongs),
                 categories: ['Recommendations'],
-            });
+            });*/
+            return this.recPlay;
         } catch (error) {
             console.error("Error in getMoreRecommendations:", error);
             return 'An error occurred while processing your request.';
@@ -94,7 +99,9 @@ return new PlaylistEntity({
         return filteredSongs;
     }
 
-    async getMoreRecommendations(userId: string, userHistory: SongEntity []): Promise<PlaylistEntity | string> {
+    //async getMoreRecommendations(userId: string, userHistory: SongEntity []): Promise<PlaylistEntity | string> {
+    async getMoreRecommendations(userId: string, userHistory: SongEntity []): Promise<SongEntity[] | string> {
+        
         try {
             if (!userHistory || userHistory.length < 5) {
                 return "You didn't listen to enough songs to be recommended new ones.";
@@ -113,13 +120,14 @@ return new PlaylistEntity({
                 await this.recommendations.updateRecommendationByUserId(existingRecommendation, userId);
             }
 
-            return new PlaylistEntity({
+            /*return new PlaylistEntity({
                 name: 'See more recommendations',
                 description: 'Additional recommended songs based on your listening history.',
                 //songs: recommendedSongs,
                 songs: ['Song1', 'Song2', 'Song3', 'Song4', 'Song5'],
                 categories: ['Recommendations'],
-            });
+            });*/
+            return this.recPlay;
         } catch (error) {
             console.error("Error in getMoreRecommendations:", error);
             return 'An error occurred while processing your request.';
@@ -128,25 +136,28 @@ return new PlaylistEntity({
 
     // Method to get recommendation history
     //Retrieves the full history of recommended songs for a user
-    async getRecommendationHistory(userId: string): Promise<PlaylistEntity | string > {
+    //async getRecommendationHistory(userId: string): Promise<PlaylistEntity | string > {
+    async getRecommendationHistory(userId: string): Promise<SongEntity[] | string > {
         try {
             const existingRecommendation = await this.recommendations.findOne(rec => rec.userId === userId);
 
             if (existingRecommendation) {
-                return new PlaylistEntity({
+                /*return new PlaylistEntity({
                     name: 'Recommendation History',
                     description: 'Playlist of all previously recommended songs.',
                     //songs: this.getSongNames(existingRecommendation.recommendationHistory),
                     categories: ['Recommendations'],
-                });
+                });*/
+                return this.recPlay;
             }
 
-            return new PlaylistEntity({
+            /*return new PlaylistEntity({
                 name: 'Recommendation History',
                 description: 'No recommendation history found.',
                 songs: [],
                 categories: ['Recommendations'],
-            });
+            });*/
+            return 'No recommendation history found.';
         } catch (error) {
             console.error("Error in getMoreRecommendations:", error);
             return 'An error occurred while processing your request.';
@@ -154,7 +165,8 @@ return new PlaylistEntity({
     }
 
     // Method to delete a song from recommended songs
-    async deleteRecommendedSong(userId: string, songIndex: number): Promise<PlaylistEntity | string> {
+    //async deleteRecommendedSong(userId: string, songIndex: number): Promise<PlaylistEntity | string> {
+    async deleteRecommendedSong(userId: string, songIndex: number): Promise<SongEntity[] | string>{
         try {
             const existingRecommendation = await this.recommendations.findOne(rec => rec.userId === userId);
 
@@ -164,12 +176,54 @@ return new PlaylistEntity({
                 // Update the recommendation in the repository
                 this.recommendations.updateRecommendationByUserId(existingRecommendation, userId);
 
-                return new PlaylistEntity({
+                /*return new PlaylistEntity({
                     name: 'Recommended songs',
                     description: 'Updated playlist after deleting a recommended song.',
                     //songs: this.getSongNames(existingRecommendation.recommendedSongs),
                     categories: ['Recommendations'],
-                });
+                });*/
+                return [
+                    {
+                        id: '1',
+                        idSong: 1,
+                        name: 'Song1',
+                        artist: 'artist',
+                        genre: 'Pop',
+                        tags: []
+                    },
+                    {
+                        id: '2',
+                        idSong: 2,
+                        name: 'Song2',
+                        artist: 'artist',
+                        genre: 'Rock',
+                        tags: []
+                    },
+                    {
+                        id: '3',
+                        idSong: 3,
+                        name: 'Song3',
+                        artist: 'artist',
+                        genre: 'Hip Hop',
+                        tags: []
+                    },
+                    {
+                        id: '4',
+                        idSong: 4,
+                        name: 'Song4',
+                        artist: 'artist',
+                        genre: 'Electronic',
+                        tags: []
+                    },
+                    {
+                        id: '5',
+                        idSong: 5,
+                        name: 'Song5',
+                        artist: 'artist',
+                        genre: 'R&B',
+                        tags: []
+                    }
+                ];
             }
 
             return 'Invalid song index or no recommendations found.';

@@ -17,23 +17,28 @@ class RecommendationController {
     private initRoutes() {
 
         // Route to generate recommendations
-        this.router.post('/recommendations/playlist', (req: Request, res: Response) => {
+        this.router.post('/recommendations/playlist', async (req: Request, res: Response) => {
             const { userId, userHistory } = req.body;
-            const playlist = this.recommendationService.generateRecommendations(userId, userHistory);
-            res.status(201).json(playlist);
+            const playlist = await this.generateRecommendations(userId, userHistory);
+            //const playlist = this.recommendationService.generateRecommendations(userId, userHistory);
+            //res.status(201).json(playlist);
         });
         // Route to get more recommendations
-        this.router.post('/recommendations/playlist/more', (req: Request, res: Response) => {
+        this.router.post('/recommendations/playlist/more', async (req: Request, res: Response) => {
             const { userId, userHistory } = req.body;
-            const playlist = this.recommendationService.getMoreRecommendations(userId, userHistory);
-            res.status(200).json(playlist);
+            const playlist = await this.getMoreRecommendations(userId, userHistory);
+            //const playlist = this.recommendationService.getMoreRecommendations(userId, userHistory);
+            //res.status(200).json(playlist);
         });
         // Route to get recommendation history
         this.router.get('/recommendations/history', (req: Request, res: Response) => {
-            const userId = req.params.userId;
-            const playlist = this.recommendationService.getRecommendationHistory(userId);
-            res.status(200).json(playlist);
+            const { userId, userHistory } = req.body;
+            const playlist = this.getRecommendationHistory(userId, userHistory); //Ver se está certo
+            //const userId = req.params.userId;
+            //const playlist = this.recommendationService.getRecommendationHistory(userId);
+            //res.status(200).json(playlist);
         });
+
         // Route to delete a recommended song
         this.router.delete('/recommendations/playlist/:songIndex', (req: Request, res: Response) => {
             const userId = req.params.userId;
