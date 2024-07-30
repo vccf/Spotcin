@@ -46,5 +46,10 @@
     "vite": "^4.3.9",
     "vitest": "^0.32.0",
     "vue-tsc": "^1.6.5"
+  },
+  "cypress-cucumber-preprocessor": {
+    "stepDefinitions": [
+      "../frontend/cypress/e2e/features/tests/recommendations.cy.ts"
+    ]
   }
 }

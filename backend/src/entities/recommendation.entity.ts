@@ -1,18 +1,11 @@
 import BaseEntity from './base.entity';
-
-class Song {
-    id: number;
-    name: string;
-    artist: string;
-    genre?: string;
-    tags?: string[];
-}
+import SongEntity from './song.entity';
 
 class RecommendationEntity extends BaseEntity {
     userId: string; // each recommendation is associated with a user
-    listenedSongs: Song []; //array of user listening history
-    recommendedSongs: Song[]; // array of songs that are recommended to the user
-    recommendationHistory: Song[];
+    listenedSongs: SongEntity []; //array of user listening history
+    recommendedSongs: SongEntity[]; // array of songs that are recommended to the user
+    recommendationHistory: SongEntity[];
     //recommendationDate: Date;
 
     constructor(data: Partial<RecommendationEntity>) {

@@ -41,7 +41,7 @@ class RecommendationService {
 
             const recommendation = new RecommendationEntity({
                 userId,
-                listenedSongs: userHistory,
+                //listenedSongs: userHistory,
                 recommendedSongs : [],
                 recommendationHistory: [],
             });
@@ -109,7 +109,7 @@ return new PlaylistEntity({
 
             const existingRecommendation = await this.recommendations.getRecommendationByUserId(userId);
             if (existingRecommendation) {
-                existingRecommendation.recommendedSongs.push(...recommendedSongs);
+                //existingRecommendation.recommendedSongs.push(...recommendedSongs);
                 await this.recommendations.updateRecommendationByUserId(existingRecommendation, userId);
             }
 
@@ -136,7 +136,7 @@ return new PlaylistEntity({
                 return new PlaylistEntity({
                     name: 'Recommendation History',
                     description: 'Playlist of all previously recommended songs.',
-                    songs: this.getSongNames(existingRecommendation.recommendationHistory),
+                    //songs: this.getSongNames(existingRecommendation.recommendationHistory),
                     categories: ['Recommendations'],
                 });
             }
@@ -167,7 +167,7 @@ return new PlaylistEntity({
                 return new PlaylistEntity({
                     name: 'Recommended songs',
                     description: 'Updated playlist after deleting a recommended song.',
-                    songs: this.getSongNames(existingRecommendation.recommendedSongs),
+                    //songs: this.getSongNames(existingRecommendation.recommendedSongs),
                     categories: ['Recommendations'],
                 });
             }

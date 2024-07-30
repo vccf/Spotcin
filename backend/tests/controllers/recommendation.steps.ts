@@ -29,11 +29,11 @@ defineFeature(feature, (test) => {
 
         when(/^uma requisição (.*) for enviada para "(.*)"$/, async (POST, url) => {
             mockRecommendationEntity.recommendationHistory.push(
-                { id: 1, name: 'Ride', artist: 'Lana Del Rey'}, 
-                { id: 2, name: 'Age of Love', artist: 'Charlotte de Witte'}, 
-                { id: 3, name: 'Legacy', artist: 'Sara Landry'}, 
-                { id: 4, name: 'Dori Me', artist: 'Deborah de Luca'}, 
-                { id: 5, name: 'Metal Heart', artist: 'Cat Powder'}
+                { id: '1', idSong: 1, name: 'Ride', artist: 'Lana Del Rey', genre: "Art pop", tags: ["melancholic", "female", "longing"]}, 
+                { id: '2', idSong: 2, name: 'Age of Love', artist: 'Charlotte de Witte', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                { id: '3', idSong: 3, name: 'Legacy', artist: 'Sara Landry', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                { id: '4', idSong: 4, name: 'Dori Me', artist: 'Deborah de Luca', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                { id: '5', idSong: 5, name: 'Metal Heart', artist: 'Cat Power', genre: "Slowcore", tags: ["female", "melancholic", "dark", "hypnotic"]}
             );
             await mockRecommendationRepository.createOrUpdateRecommendation(mockRecommendationEntity);
             response = await request.get('/recommendations/generate').query({ userId: mockRecommendationEntity.userId });
@@ -76,11 +76,11 @@ defineFeature(feature, (test) => {
                 userId: username,
                 listenedSongs:[],
                 recommendedSongs: [
-                    { id: 1, name: 'Ride', artist: 'Lana Del Rey'}, 
-                    { id: 2, name: 'Age of Love', artist: 'Charlotte de Witte'}, 
-                    { id: 3, name: 'Legacy', artist: 'Sara Landry'}, 
-                    { id: 4, name: 'Dori Me', artist: 'Deborah de Luca'}, 
-                    { id: 5, name: 'Metal Heart', artist: 'Cat Powder'}
+                    { id: '1', idSong: 1, name: 'Ride', artist: 'Lana Del Rey', genre: "Art pop", tags: ["melancholic", "female", "longing"]}, 
+                    { id: '2', idSong: 2, name: 'Age of Love', artist: 'Charlotte de Witte', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                    { id: '3', idSong: 3, name: 'Legacy', artist: 'Sara Landry', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                    { id: '4', idSong: 4, name: 'Dori Me', artist: 'Deborah de Luca', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                    { id: '5', idSong: 5, name: 'Metal Heart', artist: 'Cat Power', genre: "Slowcore", tags: ["female", "melancholic", "dark", "hypnotic"]}
                 ],
                 recommendationHistory: [],
             });
@@ -90,11 +90,11 @@ defineFeature(feature, (test) => {
         and(/^a playlist "(.*)" associada a usuária "(.*)" tem as músicas "(.*)", "(.*)", "(.*)", "(.*)", "(.*)"$/, 
             async (recommendedSongs, username, song1, song2, song3, song4, song5) => {
             mockRecommendationEntity.recommendedSongs = [
-                { id: 1, name: 'Ride', artist: 'Lana Del Rey'}, 
-                { id: 2, name: 'Age of Love', artist: 'Charlotte de Witte'}, 
-                { id: 3, name: 'Legacy', artist: 'Sara Landry'}, 
-                { id: 4, name: 'Dori Me', artist: 'Deborah de Luca'}, 
-                { id: 5, name: 'Metal Heart', artist: 'Cat Powder'}
+                { id: '1', idSong: 1, name: 'Ride', artist: 'Lana Del Rey', genre: "Art pop", tags: ["melancholic", "female", "longing"]}, 
+                { id: '2', idSong: 2, name: 'Age of Love', artist: 'Charlotte de Witte', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                { id: '3', idSong: 3, name: 'Legacy', artist: 'Sara Landry', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                { id: '4', idSong: 4, name: 'Dori Me', artist: 'Deborah de Luca', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                { id: '5', idSong: 5, name: 'Metal Heart', artist: 'Cat Power', genre: "Slowcore", tags: ["female", "melancholic", "dark", "hypnotic"]}
             ];
             await mockRecommendationRepository.createOrUpdateRecommendation(mockRecommendationEntity);
         });
@@ -131,11 +131,12 @@ defineFeature(feature, (test) => {
                 userId: username,
                 listenedSongs: [],
                 recommendedSongs: [
-                    { id: 1, name: 'Ride', artist: 'Lana Del Rey'}, 
-                    { id: 2, name: 'Age of Love', artist: 'Charlotte de Witte'}, 
-                    { id: 3, name: 'Legacy', artist: 'Sara Landry'}, 
-                    { id: 4, name: 'Dori Me', artist: 'Deborah de Luca'}, 
-                    { id: 5, name: 'Metal Heart', artist: 'Cat Powder'}],
+                    { id: '1', idSong: 1, name: 'Ride', artist: 'Lana Del Rey', genre: "Art pop", tags: ["melancholic", "female", "longing"]}, 
+                    { id: '2', idSong: 2, name: 'Age of Love', artist: 'Charlotte de Witte', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                    { id: '3', idSong: 3, name: 'Legacy', artist: 'Sara Landry', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                    { id: '4', idSong: 4, name: 'Dori Me', artist: 'Deborah de Luca', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                    { id: '5', idSong: 5, name: 'Metal Heart', artist: 'Cat Power', genre: "Slowcore", tags: ["female", "melancholic", "dark", "hypnotic"]}
+                ],
                 recommendationHistory: [],
             });
             await mockRecommendationRepository.createOrUpdateRecommendation(mockRecommendationEntity);
@@ -144,21 +145,22 @@ defineFeature(feature, (test) => {
         and(/^a playlist "(.*)" associada a usuária "(.*)" tem as músicas "(.*)", "(.*)", "(.*)", "(.*)", "(.*)"$/, 
             async (recommendedSongs, username, song1, song2, song3, song4, song5) => {
             mockRecommendationEntity.recommendedSongs = [
-                { id: 1, name: 'Ride', artist: 'Lana Del Rey'}, 
-                { id: 2, name: 'Age of Love', artist: 'Charlotte de Witte'}, 
-                { id: 3, name: 'Legacy', artist: 'Sara Landry'}, 
-                { id: 4, name: 'Dori Me', artist: 'Deborah de Luca'}, 
-                { id: 5, name: 'Metal Heart', artist: 'Cat Powder'}];
+                { id: '1', idSong: 1, name: 'Ride', artist: 'Lana Del Rey', genre: "Art pop", tags: ["melancholic", "female", "longing"]}, 
+                { id: '2', idSong: 2, name: 'Age of Love', artist: 'Charlotte de Witte', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                { id: '3', idSong: 3, name: 'Legacy', artist: 'Sara Landry', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                { id: '4', idSong: 4, name: 'Dori Me', artist: 'Deborah de Luca', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                { id: '5', idSong: 5, name: 'Metal Heart', artist: 'Cat Power', genre: "Slowcore", tags: ["female", "melancholic", "dark", "hypnotic"]}
+            ];
             await mockRecommendationRepository.createOrUpdateRecommendation(mockRecommendationEntity);
         });
 
         when(/^uma requisição "(.*)" for enviada para "(.*)"$/, async (POST, url) => {
             const newSongs = [
-                { id: 6, name: 'Rigid (Kobosil 44 Rush Mix)', artist: 'Rosa Anschütz'}, 
-                { id: 7, name: 'Hypnotized (Joyhauser Mix)', artist: 'Amelie Lens'},
-                { id: 8, name: 'Shame', artist: 'Low'},
-                { id: 9, name: 'Schwarze Schatten', artist: 'Schepperlotte'},
-                { id: 10, name: 'City Looks Pretty', artist: 'Courtney Barnett'}
+                { id: '6', idSong: 6, name: 'Rigid (Kobosil 44 Rush Mix)', artist: 'Rosa Anschütz', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                { id: '7', idSong: 7, name: 'Hypnotized (Joyhauser Mix)', artist: 'Amelie Lens', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]},
+                { id: '8', idSong: 8, name: 'Shame', artist: 'Low', genre: "Slowcore", tags: ["female", "melancholic", "dark", "hypnotic"]},
+                { id: '9', idSong: 9, name: 'Schwarze Schatten', artist: 'Schepperlotte', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]},
+                { id: '10', idSong: 10, name: 'City Looks Pretty', artist: 'Courtney Barnett', genre: "Indie rock", tags: ["female", "urban", "melodic"]}
             ];
             mockRecommendationEntity.recommendedSongs.push(...newSongs);
             await mockRecommendationRepository.createOrUpdateRecommendation(mockRecommendationEntity);
@@ -228,11 +230,12 @@ defineFeature(feature, (test) => {
                 userId: username,
                 recommendedSongs: [],
                 recommendationHistory: [
-                    { id: 1, name: 'Ride', artist: 'Lana Del Rey'}, 
-                    { id: 2, name: 'Age of Love', artist: 'Charlotte de Witte'}, 
-                    { id: 3, name: 'Legacy', artist: 'Sara Landry'}, 
-                    { id: 4, name: 'Dori Me', artist: 'Deborah de Luca'}, 
-                    { id: 5, name: 'Metal Heart', artist: 'Cat Powder'}],
+                    { id: '1', idSong: 1, name: 'Ride', artist: 'Lana Del Rey', genre: "Art pop", tags: ["melancholic", "female", "longing"]}, 
+                    { id: '2', idSong: 2, name: 'Age of Love', artist: 'Charlotte de Witte', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                    { id: '3', idSong: 3, name: 'Legacy', artist: 'Sara Landry', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                    { id: '4', idSong: 4, name: 'Dori Me', artist: 'Deborah de Luca', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                    { id: '5', idSong: 5, name: 'Metal Heart', artist: 'Cat Power', genre: "Slowcore", tags: ["female", "melancholic", "dark", "hypnotic"]}
+                ],
             });
             await mockRecommendationRepository.createOrUpdateRecommendation(mockRecommendationEntity);
         });

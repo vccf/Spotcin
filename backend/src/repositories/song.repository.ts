@@ -15,6 +15,23 @@ class SongRepository extends BaseRepository<SongEntity> {
             throw new InternalServerError();
         }
     }
+
+    public filterSongsByGenreAndTags(allSongs: SongEntity[], filterSongs: SongEntity[]): SongEntity[] {
+        const filteredSongs: SongEntity[] = [];
+
+        for (const song of allSongs) {
+            if (song.genre === filterSongs[0].genre && this.hasSimilarTags(song.tags, filterSongs[0].tags)) {
+                filteredSongs.push(song);
+            }
+        }
+
+        return filteredSongs;
+    }
+
+    private hasSimilarTags(tags1: string[], tags2: string[]): boolean {
+        const commonTags = tags1.filter(tag => tags2.includes(tag));
+        return commonTags.length > 0;
+    }
 }
 
 export default SongRepository;
