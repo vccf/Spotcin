@@ -4,13 +4,13 @@ import RecommendationRepository from '../repositories/recommendation.repository'
 import SongEntity from '../entities/song.entity';
 import SongRepository from '../repositories/song.repository';
 
-class Song {
+/*class Song {
     id: number;
     name: string;
     artist: string;
     genre?: string;
     tags?: string[];
-}
+}*/
 
 class RecommendationService {
     //private recommendations: RecommendationEntity[];
@@ -26,7 +26,7 @@ class RecommendationService {
         this.recommendations = recommendations;
     }
 
-    getSongNames(songs: Song[]): string[] {
+    getSongNames(songs: SongEntity[]): string[] {
         return songs.map(song => song.name);
     }
 
@@ -35,7 +35,7 @@ class RecommendationService {
     }
 
     // Method to generate recommended songs based on user's listening history
-    async generateRecommendations(userId: string, userHistory: Song[]): Promise<PlaylistEntity | string> {
+    async generateRecommendations(userId: string, userHistory: SongEntity[]): Promise<PlaylistEntity | string> {
         try {
             const recommendedSongs = userHistory.slice(0, 5); // Recommend first 5 songs
 
@@ -82,8 +82,8 @@ return new PlaylistEntity({
     categories: ['Recommendations'],
 });
 }*/
-    async filterSongsByGenreAndTags(listenedSongs: Song[], allSongs: Song[]): Promise<Song[]> {
-        const filteredSongs: Song[] = [];
+    async filterSongsByGenreAndTags(listenedSongs: SongEntity[], allSongs: SongEntity[]): Promise<SongEntity[]> {
+        const filteredSongs: SongEntity[] = [];
         for (const song of allSongs) {
             if (listenedSongs.some(listenedSong => listenedSong.genre === song.genre)) {
                 filteredSongs.push(song);
@@ -94,14 +94,14 @@ return new PlaylistEntity({
         return filteredSongs;
     }
 
-    async getMoreRecommendations(userId: string, userHistory: Song []): Promise<PlaylistEntity | string> {
+    async getMoreRecommendations(userId: string, userHistory: SongEntity []): Promise<PlaylistEntity | string> {
         try {
             if (!userHistory || userHistory.length < 5) {
                 return "You didn't listen to enough songs to be recommended new ones.";
             }
 
             //const allSongs = await this.songs.getAllSongs();
-            const allSongs = [{ id: 1, name: 'Song1', artist: 'artist'}] //RESEE THIS
+            const allSongs = [{ id: '1', idSong: 1, name: 'Song1', artist: 'artist', genre: 'Pop', tags:[]}] //RESEE THIS
 
             const recs = this.filterSongsByGenreAndTags(userHistory, allSongs);
 
