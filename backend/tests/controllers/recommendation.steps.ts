@@ -19,25 +19,31 @@ defineFeature(feature, (test) => {
 
     test('Gerar lista de recomendações', ({ given, when, then, and }) => {
         given(/^A usuária "(.*)" está no sistema$/, async (username) => {
-            mockRecommendationEntity = new RecommendationEntity({
+            /*mockRecommendationEntity = new RecommendationEntity({
                 userId: username,
+                listenedSongs : [],
                 recommendedSongs: [],
                 recommendationHistory: [],
             });
-            await mockRecommendationRepository.createOrUpdateRecommendation(mockRecommendationEntity);
+            await mockRecommendationRepository.createOrUpdateRecommendation(mockRecommendationEntity);*/
+            await mockRecommendationRepository.createRec(username);
         });
 
         when(/^uma requisição (.*) for enviada para "(.*)"$/, async (POST, url) => {
-            mockRecommendationEntity.recommendationHistory.push(
+            const newRecs =[
+            //mockRecommendationEntity.recommendedSongs.push(
                 { id: '1', idSong: 1, name: 'Ride', artist: 'Lana Del Rey', genre: "Art pop", tags: ["melancholic", "female", "longing"]}, 
                 { id: '2', idSong: 2, name: 'Age of Love', artist: 'Charlotte de Witte', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
                 { id: '3', idSong: 3, name: 'Legacy', artist: 'Sara Landry', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
                 { id: '4', idSong: 4, name: 'Dori Me', artist: 'Deborah de Luca', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
                 { id: '5', idSong: 5, name: 'Metal Heart', artist: 'Cat Power', genre: "Slowcore", tags: ["female", "melancholic", "dark", "hypnotic"]}
-            );
-            await mockRecommendationRepository.createOrUpdateRecommendation(mockRecommendationEntity);
+            ];
+            //);
+            //await mockRecommendationRepository.createOrUpdateRecommendation(mockRecommendationEntity);
             //response = await request.get('/recommendations/generate').query({ userId: mockRecommendationEntity.userId });
-            response = await request.get('/recommendations/playlist').query({ userId: mockRecommendationEntity.userId });
+            await mockRecommendationRepository.updateRec(mockRecommendationEntity, newRecs);
+            await mockRecommendationRepository.getMoreRecs();
+            response = await request.post('/recommendations/playlist');
             console.log(response.body);
         });
 
@@ -48,9 +54,14 @@ defineFeature(feature, (test) => {
         and (/^o JSON da resposta deve ser uma playlist de músicas$/, () => {
             expect(response.body).toBeDefined();
             expect(Array.isArray(response.body)).toBe(true);
-            expect(response.body.length).toBeGreaterThan(0);
+            //expect(response.body.length).toBeGreaterThan(0);
+            expect(response.body.length).toBe(5);
+            expect(response.body[0]).toHaveProperty('id');
+            expect(response.body[0]).toHaveProperty('idSong');
             expect(response.body[0]).toHaveProperty('name');
             expect(response.body[0]).toHaveProperty('artist');
+            expect(response.body[0]).toHaveProperty('genre');
+            expect(response.body[0]).toHaveProperty('tags');
         });
 
         /*and(/^o sistema gera uma lista de recomendações com (\d+) músicas que podem ser visualizadas pelo usuário$/, async (count) => {
@@ -85,9 +96,17 @@ defineFeature(feature, (test) => {
                     { id: '4', idSong: 4, name: 'Dori Me', artist: 'Deborah de Luca', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
                     { id: '5', idSong: 5, name: 'Metal Heart', artist: 'Cat Power', genre: "Slowcore", tags: ["female", "melancholic", "dark", "hypnotic"]}
                 ],
-                recommendationHistory: [],
+                recommendationHistory: [
+                    { id: '1', idSong: 1, name: 'Ride', artist: 'Lana Del Rey', genre: "Art pop", tags: ["melancholic", "female", "longing"]}, 
+                    { id: '2', idSong: 2, name: 'Age of Love', artist: 'Charlotte de Witte', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                    { id: '3', idSong: 3, name: 'Legacy', artist: 'Sara Landry', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                    { id: '4', idSong: 4, name: 'Dori Me', artist: 'Deborah de Luca', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                    { id: '5', idSong: 5, name: 'Metal Heart', artist: 'Cat Power', genre: "Slowcore", tags: ["female", "melancholic", "dark", "hypnotic"]}
+                ],
             });
-            await mockRecommendationRepository.createOrUpdateRecommendation(mockRecommendationEntity);
+            //await mockRecommendationRepository.createOrUpdateRecommendation(mockRecommendationEntity);
+            await mockRecommendationRepository.createRec(username);
+            await mockRecommendationRepository.updateRec(mockRecommendationEntity, mockRecommendationEntity.recommendedSongs);
         });
 
         and(/^a playlist "(.*)" associada a usuária "(.*)" tem as músicas "(.*)", "(.*)", "(.*)", "(.*)", "(.*)"$/, 
@@ -99,7 +118,8 @@ defineFeature(feature, (test) => {
                 { id: '4', idSong: 4, name: 'Dori Me', artist: 'Deborah de Luca', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
                 { id: '5', idSong: 5, name: 'Metal Heart', artist: 'Cat Power', genre: "Slowcore", tags: ["female", "melancholic", "dark", "hypnotic"]}
             ];
-            await mockRecommendationRepository.createOrUpdateRecommendation(mockRecommendationEntity);
+            //await mockRecommendationRepository.createOrUpdateRecommendation(mockRecommendationEntity);
+            await mockRecommendationRepository.updateRec(mockRecommendationEntity, mockRecommendationEntity.recommendedSongs);
         });
     
         when(/^uma requisição "(.*)" for enviada para "(.*)" com o corpo da requisição sendo um JSON com a música "(.*)"$/, 
@@ -116,17 +136,25 @@ defineFeature(feature, (test) => {
         and(/^o JSON da resposta deve ser uma playlist de músicas$/, () => {
             expect(response.body).toBeDefined();
             expect(Array.isArray(response.body)).toBe(true);
-            expect(response.body.length).toBeGreaterThan(0);
+            expect(response.body.length).toBe(4); // Initially 5 recommendations, then 1 removed
+            expect(response.body[0]).toHaveProperty('id');
+            expect(response.body[0]).toHaveProperty('idSong');
             expect(response.body[0]).toHaveProperty('name');
             expect(response.body[0]).toHaveProperty('artist');
+            expect(response.body[0]).toHaveProperty('genre');
+            expect(response.body[0]).toHaveProperty('tags');
         });
 
         and (/^a música "(.*)" não está na playlist e as músicas "(.*)", "(.*)", "(.*)", "(.*)" estão na playlist$/, 
             async (removedSong, remainingSongs) => { 
-            const updatedPlaylist = await mockRecommendationRepository.getRecommendationByUserId(mockRecommendationEntity.userId);
+            //const updatedPlaylist = await mockRecommendationRepository.getRecommendationByUserId(mockRecommendationEntity.userId);
+            const updatedPlaylist = await mockRecommendationRepository.deleteOneRec(removedSong);
             expect(updatedPlaylist).toBeDefined();
-            expect(updatedPlaylist!.recommendedSongs).not.toContain(removedSong);
-            expect(updatedPlaylist!.recommendedSongs).toEqual(remainingSongs.split(', '));
+            expect(updatedPlaylist).toHaveLength(4); // Initially 5 recommendations, then 1 removed
+            expect(updatedPlaylist).not.toContain(removedSong);
+            expect(updatedPlaylist).toEqual(remainingSongs.split(', '));
+            //expect(updatedPlaylist!.recommendedSongs).not.toContain(removedSong);
+            //expect(updatedPlaylist!.recommendedSongs).toEqual(remainingSongs.split(', '));
         });
     });
 
@@ -142,9 +170,17 @@ defineFeature(feature, (test) => {
                     { id: '4', idSong: 4, name: 'Dori Me', artist: 'Deborah de Luca', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
                     { id: '5', idSong: 5, name: 'Metal Heart', artist: 'Cat Power', genre: "Slowcore", tags: ["female", "melancholic", "dark", "hypnotic"]}
                 ],
-                recommendationHistory: [],
+                recommendationHistory: [
+                    { id: '1', idSong: 1, name: 'Ride', artist: 'Lana Del Rey', genre: "Art pop", tags: ["melancholic", "female", "longing"]}, 
+                    { id: '2', idSong: 2, name: 'Age of Love', artist: 'Charlotte de Witte', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                    { id: '3', idSong: 3, name: 'Legacy', artist: 'Sara Landry', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                    { id: '4', idSong: 4, name: 'Dori Me', artist: 'Deborah de Luca', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                    { id: '5', idSong: 5, name: 'Metal Heart', artist: 'Cat Power', genre: "Slowcore", tags: ["female", "melancholic", "dark", "hypnotic"]}
+                ],
             });
-            await mockRecommendationRepository.createOrUpdateRecommendation(mockRecommendationEntity);
+            //await mockRecommendationRepository.createOrUpdateRecommendation(mockRecommendationEntity);
+            await mockRecommendationRepository.createRec(username);
+            await mockRecommendationRepository.updateRec(mockRecommendationEntity, mockRecommendationEntity.recommendedSongs);
         });
 
         and(/^a playlist "(.*)" associada a usuária "(.*)" tem as músicas "(.*)", "(.*)", "(.*)", "(.*)", "(.*)"$/, 
@@ -156,7 +192,8 @@ defineFeature(feature, (test) => {
                 { id: '4', idSong: 4, name: 'Dori Me', artist: 'Deborah de Luca', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
                 { id: '5', idSong: 5, name: 'Metal Heart', artist: 'Cat Power', genre: "Slowcore", tags: ["female", "melancholic", "dark", "hypnotic"]}
             ];
-            await mockRecommendationRepository.createOrUpdateRecommendation(mockRecommendationEntity);
+            //await mockRecommendationRepository.createOrUpdateRecommendation(mockRecommendationEntity);
+            await mockRecommendationRepository.updateRec(mockRecommendationEntity, mockRecommendationEntity.recommendedSongs);
         });
 
         when(/^uma requisição "(.*)" for enviada para "(.*)"$/, async (POST, url) => {
@@ -167,29 +204,33 @@ defineFeature(feature, (test) => {
                 { id: '9', idSong: 9, name: 'Schwarze Schatten', artist: 'Schepperlotte', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]},
                 { id: '10', idSong: 10, name: 'City Looks Pretty', artist: 'Courtney Barnett', genre: "Indie rock", tags: ["female", "urban", "melodic"]}
             ];
-            mockRecommendationEntity.recommendedSongs.push(...newSongs);
-            await mockRecommendationRepository.createOrUpdateRecommendation(mockRecommendationEntity);
-    
+            //mockRecommendationEntity.recommendedSongs.push(...newSongs);
+            //await mockRecommendationRepository.createOrUpdateRecommendation(mockRecommendationEntity);
+            const updatedPlaylist= await mockRecommendationRepository.updateRec(mockRecommendationEntity, newSongs);
             //response = await request.put(`/recommendations/${mockRecommendationEntity.userId}/more`);
             response = await request.post(`/recommendations/playlist/more`);
             console.log(response.body);
 
-            const updatedPlaylist = await mockRecommendationRepository.getRecommendationByUserId(mockRecommendationEntity.userId);
+            //const updatedPlaylist = await mockRecommendationRepository.getRecommendationByUserId(mockRecommendationEntity.userId);
             expect(updatedPlaylist).toBeDefined();
             expect(updatedPlaylist!.recommendedSongs).toHaveLength(10); // Initially 5 recommendations, then more 5
             
         });
 
         then(/^o status da resposta deve ser "(.*)"$/, (statusCode) => {
-            expect(response.status).toBe(parseInt(statusCode)); 200
+            expect(response.status).toBe(parseInt(statusCode)); //200
         });
 
         and('o JSON da resposta deve ser uma playlist de músicas', () => {
             expect(response.body).toBeDefined();
             expect(Array.isArray(response.body)).toBe(true);
-            expect(response.body.length).toBeGreaterThan(0);
+            expect(response.body.length).toHaveLength(10);
+            expect(response.body[0]).toHaveProperty('id');
+            expect(response.body[0]).toHaveProperty('idSong');
             expect(response.body[0]).toHaveProperty('name');
             expect(response.body[0]).toHaveProperty('artist');
+            expect(response.body[0]).toHaveProperty('genre');
+            expect(response.body[0]).toHaveProperty('tags');
         });
 
         and(/^as músicas "(.*)", "(.*)", "(.*)", "(.*)", "(.*)", "(.*)",  "(.*)", "(.*)", "(.*)", "(.*)" estão na playlist$/, 
@@ -234,7 +275,7 @@ defineFeature(feature, (test) => {
 
     test('Ver histórico de recomendações', ({ given, when, then, and }) => {
         given(/^A usuária "(.*)" está no sistema$/, async (username) => {
-            mockRecommendationEntity = new RecommendationEntity({
+            /*mockRecommendationEntity = new RecommendationEntity({
                 userId: username,
                 recommendedSongs: [],
                 recommendationHistory: [
@@ -245,13 +286,25 @@ defineFeature(feature, (test) => {
                     { id: '5', idSong: 5, name: 'Metal Heart', artist: 'Cat Power', genre: "Slowcore", tags: ["female", "melancholic", "dark", "hypnotic"]}
                 ],
             });
-            await mockRecommendationRepository.createOrUpdateRecommendation(mockRecommendationEntity);
+            //await mockRecommendationRepository.createOrUpdateRecommendation(mockRecommendationEntity);*/
+            await mockRecommendationRepository.createRec(username);
+            await mockRecommendationRepository.updateRec(mockRecommendationEntity, mockRecommendationEntity.recommendedSongs);
         });
 
         and(/^a playlist "(.*)" associada a usuária "(.*)" tem as músicas "(.*)", "(.*)", "(.*)", "(.*)", "(.*)"$/, 
             async (arg0, arg1, arg2, arg3, arg4, arg5, arg6) => {
             //mockRecommendationEntity.recommendationHistory = recommendedSongs.split(', ');
-            await mockRecommendationRepository.createOrUpdateRecommendation(mockRecommendationEntity);
+            const newRecs = [
+                { id: '1', idSong: 1, name: 'Ride', artist: 'Lana Del Rey', genre: "Art pop", tags: ["melancholic", "female", "longing"]}, 
+                { id: '2', idSong: 2, name: 'Age of Love', artist: 'Charlotte de Witte', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                { id: '3', idSong: 3, name: 'Legacy', artist: 'Sara Landry', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                { id: '4', idSong: 4, name: 'Dori Me', artist: 'Deborah de Luca', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                { id: '5', idSong: 5, name: 'Metal Heart', artist: 'Cat Power', genre: "Slowcore", tags: ["female", "melancholic", "dark", "hypnotic"]}
+            ];
+            //await mockRecommendationRepository.createOrUpdateRecommendation(mockRecommendationEntity);
+            //const username='user1';
+            //await mockRecommendationRepository.createRec(username);
+            await mockRecommendationRepository.updateRec(mockRecommendationEntity, newRecs);
         });
 
         when(/^uma requisição "(.*)" for enviada para "(.*)"$/, async (GET, url) => {
@@ -270,12 +323,19 @@ defineFeature(feature, (test) => {
             expect(response.body.length).toBeGreaterThan(0);
             //expect(response.body.length).toBe(5); // Check if the playlist has 5 songs
             expect(response.body[0]).toHaveProperty('id');
+            expect(response.body[0]).toHaveProperty('idSong');
             expect(response.body[0]).toHaveProperty('name');
             expect(response.body[0]).toHaveProperty('artist');
             expect(response.body[0]).toHaveProperty('genre');
             expect(response.body[0]).toHaveProperty('tags');
 
-            const expectedSongs = ['Song1', 'Song2', 'Song3', 'Song4', 'Song5'];
+            const expectedSongs = [
+                { id: '1', idSong: 1, name: 'Ride', artist: 'Lana Del Rey', genre: "Art pop", tags: ["melancholic", "female", "longing"]}, 
+                { id: '2', idSong: 2, name: 'Age of Love', artist: 'Charlotte de Witte', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                { id: '3', idSong: 3, name: 'Legacy', artist: 'Sara Landry', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                { id: '4', idSong: 4, name: 'Dori Me', artist: 'Deborah de Luca', genre: "Techno", tags: ["female", "repetitive", "hypnotic"]}, 
+                { id: '5', idSong: 5, name: 'Metal Heart', artist: 'Cat Power', genre: "Slowcore", tags: ["female", "melancholic", "dark", "hypnotic"]}
+            ];
             for (const song of expectedSongs) {
                 expect(response.body).toContain(song); // Check if each song is in the playlist
             }

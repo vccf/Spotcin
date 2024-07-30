@@ -28,7 +28,8 @@ class RecommendationService {
     //constructor() {
     //this.recommendations = [];
     //}
-
+    
+    private recEntity: RecommendationEntity;
     private recommendations: RecommendationRepository= new RecommendationRepository();
     private songs: SongRepository = new SongRepository();
 
@@ -94,6 +95,89 @@ class RecommendationService {
     recPlay=this.filterSongsByGenreAndTags(this.userHistory, this.allSongs)
     recPlayExpanded=this.getFilteredSongs(this.userId, this.userHistory, this.allSongs)
     recPlayExpandDouble=this.get15Recommendations(this.userId, this.userHistory, this.allSongs)
+
+    //userHistory=this.recommendations.getUserHistory();
+    //allSongs=this.songs.getAllSongs();
+
+    /*userRecs1 = [
+        { id: '1', idSong:1, name: "Uusi teknokratia", artist: "Oranssi Pazuzu", genre: "Black Metal", tags: ["dark","hypnotic", "concept", "psychedelic"]},
+        { id: '2', idSong:2, name: "Cleansing", artist: "Wolves in the Throne Room", genre: "Black Metal", tags: ["dark", "heavy", "hypnotic", "forest"] },
+        { id: '3', idSong: 3, name: "Freezing Moon", artist: "Mayem", genre: "Black Metal", tags: ["dark", "heavy", "aggressive", "winter"] },
+        { id: '4', idSong: 4, name: "Dearth", artist: "Deathspell Omega", genre: "Black Metal", tags: ["dark", "heavy", "chaotic", "concept", "hypnotic"]},
+        { id: '5', idSong: 5, name: "Blood Fire Death", artist: "Bathory", genre: "Black Metal", tags: ["dark", "heavy","aggressive", "pagan"]},
+    ];*/
+
+    playlistRec: SongEntity [] =[
+        { id: '1', idSong: 1, name: "Uusi teknokratia", artist: "Oranssi Pazuzu", genre: "Black Metal", tags: ["dark","hypnotic", "concept", "psychedelic"]},
+        { id: '2', idSong: 2, name: "Cleansing", artist: "Wolves in the Throne Room", genre: "Black Metal", tags: ["dark", "heavy", "hypnotic", "forest"] },
+        { id: '3', idSong: 3, name: "Freezing Moon", artist: "Mayem", genre: "Black Metal", tags: ["dark", "heavy", "aggressive", "winter"] },
+        { id: '4', idSong: 4, name: "Dearth", artist: "Deathspell Omega", genre: "Black Metal", tags: ["dark", "heavy", "chaotic", "concept", "hypnotic"]},
+        { id: '23', idSong: 23, name: "Dunkelheit", artist: "Burzum", genre: "Black Metal", tags: ["ambient", "experimental", "atmospheric"] },
+    ];
+    
+    playlistRecExpanded : SongEntity []= [
+        { id: '25', idSong: 25, name: "Dead as Dreams", artist: "Weakling", genre: "Black Metal", tags: ["dark", "heavy", "aggressive", "melancholic", "winter", "atmospheric"]},
+        { id: '27', idSong: 27, name: "Chorea Macchabeorum", artist: "Blut aus Nord", genre: "Black Metal", tags: ["dark", "heavy", "aggressive", "winter", "atmospheric"]},
+        { id: '28', idSong: 28, name: "Maze of Phobetor", artist: 'Akhlys', genre: "Black Metal", tags: ["dark", "heavy", "chaotic", "concept", "hypnotic"]},
+        { id: '29', idSong: 29, name: "Exercises in Futility V", artist: "Mgla", genre: "Black Metal", tags: ["dark", "heavy", "aggressive", "winter", "atmospheric"]},
+        { id: '30', idSong: 30, name: "A Fine Day to Die", artist: "Bathory", genre: "Black Metal", tags: ["aggressive", "heavy", "dark", "pagan"]},
+    ];
+    
+    secRecPlaylistExpanded : SongEntity[] = [
+        { id: '5', idSong: 5, name: "Blood Fire Death", artist: "Bathory", genre: "Black Metal", tags: ["dark", "heavy","aggressive", "pagan"]},  
+        { id: '20', idSong: 20, name: "Transilvanian Hunger", artist: "Darkthrone", genre: "Black Metal", tags: ["dark", "raw", "atmospheric"] },
+        { id: '21', idSong: 21, name: "I Am the Black Wizards", artist: "Emperor", genre: "Black Metal", tags: ["epic", "symphonic", "melodic"] },
+        { id: '22', idSong: 22, name: "Funeral Fog", artist: "Mayhem", genre: "Black Metal", tags: ["iconic", "controversial", "raw"] },
+        { id: '26', idSong: 26, name: "Neither Meaning nor Justice", artist: "Deathspell Omega", genre: "Black Metal", tags: ["dark", "heavy", "chaotic", "concept", "hypnotic"]},
+    ];
+
+    public async checkUserHistory(): Promise<void> {
+        const recEn = await this.recEntity.listenedSongs.length
+        const recs = await this.recommendations
+        if (recEn === 0) {
+            throw new Error("User history is empty.");
+        }
+        return await this.recommendations.checkUserHistory();
+    }
+
+    public async getRecs(): Promise<SongEntity[]> {
+        const recEn = await this.recEntity.listenedSongs.length
+        const recs = await this.recommendations
+        if (recEn === 0) {
+            throw new Error("User history is empty.");
+        }
+        return await this.recommendations.getRecs();
+    }
+
+    public async getMoreRecs(): Promise<SongEntity[]> {
+        const recEn = await this.recEntity.recommendedSongs.length
+        const recs = await this.recommendations
+        if (recEn === 0) {
+            throw new Error("Recommendation playlist is empty.");
+        }
+        return await this.recommendations.getMoreRecs();
+    }
+
+    public async getHistRec (): Promise<SongEntity[]> {
+        const recEn = await this.recEntity.recommendationHistory.length
+        const recs = await this.recommendations
+        if (recEn === 0) {
+            throw new Error("Recommendation history is empty.");
+        }
+        return await this.recommendations.getHistRec();
+    }
+
+    public async deleteOneRec (song: SongEntity): Promise<void> {
+        const recs  = await this.recommendations.findOne(rec => rec.recommendedSongs.includes(song));
+        if(!recs){
+            throw new NotFoundError({
+                msg: 'Song not found in recommendations',
+                msgCode: RecommendationServiceMessageCode.delete_song_error,
+            });
+        }
+
+        await this.recommendations.deleteOneRec(song);
+    }
 
     // Method to generate recommended songs based on user's listening history
     //async generateRecommendations(userId: string, userHistory: SongEntity[]): Promise<PlaylistEntity | string> {
