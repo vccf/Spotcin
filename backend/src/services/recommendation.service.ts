@@ -264,6 +264,7 @@ return new PlaylistEntity({
     // Method to delete a song from recommended songs
     //async deleteRecommendedSong(userId: string, songIndex: number): Promise<PlaylistEntity | string> {
     async deleteRecommendedSong(userId: string, songIndex: number): Promise<SongEntity[] | string>{
+        const currPlay=this.recPlay;
         try {
             const existingRecommendation = await this.recommendations.findOne(rec => rec.userId === userId);
 
