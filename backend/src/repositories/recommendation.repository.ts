@@ -5,7 +5,7 @@ import BaseRepository from './base.repository';
 import SongEntity from '../entities/song.entity';
 import SongRepository from './song.repository';
 
-class Song {
+/*class Song {
     id: string;
     name: string;
     artist: string;
@@ -19,7 +19,7 @@ class Song {
         this.genre = genre;
         this.tags = tags;
     }
-}
+}*/
 
 class RecommendationRepository extends BaseRepository<RecommendationEntity> {
     constructor() {
@@ -59,23 +59,23 @@ class RecommendationRepository extends BaseRepository<RecommendationEntity> {
         }
     }
 
-    public convertToSongs(songEntities: SongEntity[]): Song[] {
+    public convertToSongs(songEntities: SongEntity[]): SongEntity[] {
         return songEntities.map((songEntity: SongEntity) => {
             const { id, name, artist, genre, tags } = songEntity;
-            return new Song({ id, name, artist, genre, tags });
+            return new SongEntity({ id, name, artist, genre, tags });
         });
     }
 
     //convSongs = this.convertToSongs(this.allSongs);
 
-    public async getRecommendedSongs(listenedSongs: Song[]): Promise<Song[]> {
+    public async getRecommendedSongs(listenedSongs: SongEntity[]): Promise<SongEntity[]> {
         try {
-            const recommendedSongs: Song[] = [];
+            const recommendedSongs: SongEntity[] = [];
             for (const song of listenedSongs) {
                 const genre = song.genre;
                 const tags = song.tags;
                 //const filteredSongs = this.allSongs.filter((s: Song) => s.genre === genre && this.areTagsSimilar(s.tags, tags));
-                const filteredSongs = [{ id: '1', name: 'Song1', artist: 'artist'}] //RESEE THIS
+                const filteredSongs = [{ id: '1', idSong:1,  name: 'Song1', artist: 'artist', genre: 'whatever', tags: []}] //RESEE THIS
                 recommendedSongs.push(...filteredSongs.slice(0, 5));
             }
             return recommendedSongs;
@@ -142,7 +142,7 @@ class RecommendationRepository extends BaseRepository<RecommendationEntity> {
         }
     }
 
-    public async deleteSongFromRecommendation(userId: string, song: Song): Promise<void> {
+    public async deleteSongFromRecommendation(userId: string, song: SongEntity): Promise<void> {
         try {
             const recommendation = await this.getRecommendationByUserId(userId);
             if (recommendation) {
@@ -158,7 +158,7 @@ class RecommendationRepository extends BaseRepository<RecommendationEntity> {
         }
     }
 
-    public async addSongToRecommendation(userId: string, song: Song): Promise<void> {
+    public async addSongToRecommendation(userId: string, song: SongEntity): Promise<void> {
         try {
             const recommendation = await this.getRecommendationByUserId(userId);
             if (recommendation) {
