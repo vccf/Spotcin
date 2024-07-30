@@ -29,6 +29,28 @@ class RecommendationRepository extends BaseRepository<RecommendationEntity> {
     public songRepository: SongRepository = new SongRepository();
     allSongs=this.songRepository.getAllSongs();
 
+    public recs: RecommendationEntity = new RecommendationEntity({ userId: '1', listenedSongs: [], recommendedSongs: [], recommendationHistory: [] });
+
+    //public async getUserHistory(): Promise<SongEntity[]> {
+    public getUserHistory(): SongEntity[] {
+        try {
+            //const listenedSongs: Song[] = []; // Initialize an empty array to store the listened songs
+            // Add logic to fetch the listened songs from the database or any other data source
+            // For now, let's assume the listened songs are already available in the 'listenedSongs' array
+            //this.recs.listenedSongs = await this.songRepository.getAllSongs();
+            if (this.recs.listenedSongs.length === 0) {
+                throw new Error('No listened songs found'); // Throw an error if the array is empty
+            }
+            return this.recs.listenedSongs;
+        } catch (error) {
+            throw new Error ('server error'); // Throw an InternalServerError with the error message
+        }
+    }
+
+    public getUserId(): string {
+        return this.recs.userId;
+    }
+
     public async getAllRecommendations(): Promise<RecommendationEntity[]> {
         try {
             return await this.findAll();

@@ -31,34 +31,37 @@ class RecommendationController {
             //res.status(200).json(playlist);
         });
         // Route to get recommendation history
-        this.router.get('/recommendations/history', (req: Request, res: Response) => {
+        this.router.get('/recommendations/history', async (req: Request, res: Response) => {
             const { userId, userHistory } = req.body;
-            const playlist = this.getRecommendationHistory(userId, userHistory); //Ver se está certo
+            const playlist = await this.getRecommendationHistory(userId, userHistory); //Ver se está certo
             //const userId = req.params.userId;
             //const playlist = this.recommendationService.getRecommendationHistory(userId);
             //res.status(200).json(playlist);
         });
 
         // Route to delete a recommended song
-        this.router.delete('/recommendations/playlist/:songIndex', (req: Request, res: Response) => {
-            const userId = req.params.userId;
-            const songIndex = parseInt(req.params.songIndex, 10); // Convert string to number
-            const result = this.recommendationService.deleteRecommendedSong(userId, songIndex);
+        this.router.delete('/recommendations/playlist/:songIndex', async (req: Request, res: Response) => {
+            //const userId = req.params.userId;
+            const { userId, songIndex } = req.body;
+            //const songIndex = parseInt(req.params.songIndex, 10); // Convert string to number
+            const result = await this.deleteRecommendedSong(userId, songIndex);
+            /*const result = this.recommendationService.deleteRecommendedSong(userId, songIndex);
             if (typeof result === 'string') {
                 res.status(400).json({ error: result });
             } else {
                 res.status(200).json(result);
-            }
+            }*/
         });
         // Route to check user listening history for recommendations
-        this.router.post('/recommendations/check', (req: Request, res: Response) => {
+        this.router.post('/recommendations/check', async (req: Request, res: Response) => {
             const { userId, userHistory } = req.body;
-            const errorMessage = this.recommendationService.checkUserListeningHistory(userId, userHistory);
+            const errorMessage = await this.checkUserListeningHistory(userId, userHistory);
+            /*const errorMessage = this.recommendationService.checkUserListeningHistory(userId, userHistory);
             if (errorMessage) {
                 res.status(400).json({ error: errorMessage });
             } else {
                 res.status(200).json({ message: 'User listened enough songs for recommendations' });
-            }
+            }*/
         });
     }
 

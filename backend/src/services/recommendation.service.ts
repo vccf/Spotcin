@@ -19,8 +19,8 @@ class RecommendationService {
     //this.recommendations = [];
     //}
 
-    private recommendations: RecommendationRepository;
-    private songs: SongRepository;
+    private recommendations: RecommendationRepository= new RecommendationRepository();
+    private songs: SongRepository = new SongRepository();
 
     constructor(recommendations: RecommendationRepository) {
         this.recommendations = recommendations;
@@ -34,7 +34,56 @@ class RecommendationService {
         return await this.songs.getAllSongs();
     }
 
-    recPlay=this.filterSongsByGenreAndTags([{ id: '1', idSong: 1, name: 'Song1', artist: 'artist', genre: 'Pop', tags:[]}], [{ id: '1', idSong: 1, name: 'Song1', artist: 'artist', genre: 'Pop', tags:[]}])
+    allSongs: SongEntity[] = [
+        { id: '1', idSong:1, name: "Uusi teknokratia", artist: "Oranssi Pazuzu", genre: "Black Metal", tags: ["dark","hypnotic", "concept", "psychedelic"]},
+        { id: '2', idSong:2, name: "Cleansing", artist: "Wolves in the Throne Room", genre: "Black Metal", tags: ["dark", "heavy", "hypnotic", "forest"] },
+        { id: '3', idSong: 3, name: "Freezing Moon", artist: "Mayem", genre: "Black Metal", tags: ["dark", "heavy", "aggressive", "winter"] },
+        { id: '4', idSong: 4, name: "Dearth", artist: "Deathspell Omega", genre: "Black Metal", tags: ["dark", "heavy", "chaotic", "concept", "hypnotic"]},
+        { id: '5', idSong: 5, name: "Blood Fire Death", artist: "Bathory", genre: "Black Metal", tags: ["dark", "heavy","aggressive", "pagan"]},
+        { id: '6', idSong: 6, name: "Persephone", artist: "Cocteau Twins", genre: "Dream Pop", tags: ["ethereal", "dreamy", "atmospheric"]},
+        { id: '7', idSong: 7, name: "Dagger", artist: "Slowdive", genre: "Dream Pop", tags: ["ethereal", "dreamy", "atmospheric"]},
+        { id: '8', idSong: 8, name: "Sometimes", artist: "My Bloody Valentine", genre: "Dream Pop", tags: ["ethereal", "dreamy", "atmospheric"]},
+        { id: '9', idSong: 9, name: "Space Song", artist: "Beach House", genre: "Dream Pop", tags: ["ethereal", "dreamy", "atmospheric"]},
+        { id: '10', idSong: 10, name: "Falling", artist: "Julee Cruise", genre: "Dream Pop", tags: ["ethereal", "dreamy", "atmospheric", "hypnotic", "dark"]},
+        { id: '11', idSong: 11, name: "Same Deep Water as You", artist: "The Cure", genre: "Gothic Rock", tags: ["dark", "melancholic", "atmospheric"]},
+        { id: '12', idSong: 12, name: "Spellbound", artist: "Siouxsie and the Banshees", genre: "Gothic Rock", tags: ["dark", "melancholic", "atmospheric"]},
+        { id: '13', idSong: 13, name: "Bela Lugosi's Dead", artist: "Bauhaus", genre: "Gothic Rock", tags: ["dark", "melancholic", "atmospheric"]},
+        { id: '14', idSong: 14, name: "Lucretia My Reflection", artist: "The Sisters of Mercy", genre: "Gothic Rock", tags: ["dark", "melancholic", "atmospheric"]},
+        { id: '15', idSong: 15, name: "Moonchild", artist: "Fields of the Nephilim", genre: "Gothic Rock", tags: ["dark", "melancholic", "atmospheric"]},
+        { id: '16', idSong: 16, name: "I Know it's over", artist: "The Smiths", genre: "Indie Pop", tags: ["melancholic", "longing"]},
+        { id: '17', idSong: 17, name: "She's My Baby", artist: "Mazzy Star", genre: "Dream Pop", tags: ["melancholic", "atmospheric", "psychedelic"]},
+        { id: '18', idSong: 18, name: "A Forest", artist: "The Cure", genre: "Post Punk", tags: ["dark", "melancholic", "atmospheric"]},
+        { id: '19', idSong: 19, name: "Love Will Tear Us Apart", artist: "Joy Division", genre: "Post Punk", tags: ["dark", "intense", "atmospheric"]},
+        { id: '20', idSong: 20, name: "Transilvanian Hunger", artist: "Darkthrone", genre: "Black Metal", tags: ["dark", "raw", "atmospheric"] },
+        { id: '21', idSong: 21, name: "I Am the Black Wizards", artist: "Emperor", genre: "Black Metal", tags: ["epic", "symphonic", "melodic"] },
+        { id: '22', idSong: 22, name: "Funeral Fog", artist: "Mayhem", genre: "Black Metal", tags: ["iconic", "controversial", "raw"] },
+        { id: '23', idSong: 23, name: "Dunkelheit", artist: "Burzum", genre: "Black Metal", tags: ["ambient", "experimental", "atmospheric"] },
+        { id: '24', idSong: 24, name: "Hvis lyset tar oss", artist: "Burzum", genre: "Black Metal", tags: ["atmospheric", "raw", "contemplative"] },
+        { id: '25', idSong: 25, name: 'Dead as Dreams', artist: 'Weakling', genre: "Black Metal", tags: ["dark", "heavy", "aggressive", "melancholic", "winter", "atmospheric"]},
+        { id: '26', idSong: 26, name: 'Neither Meaning nor Justice', artist: 'Deathspell Omega', genre: "Black Metal", tags: ["dark", "heavy", "chaotic", "concept", "hypnotic"]},
+        { id: '27', idSong: 27, name: 'Chorea Macchabeorum', artist: 'Blut aus Nord', genre: "Black Metal", tags: ["dark", "heavy", "aggressive", "winter", "atmospheric"]},
+        { id: '28', idSong: 28, name: 'Maze of Phobetor', artist: 'Akhlys', genre: "Black Metal", tags: ["dark", "heavy", "chaotic", "concept", "hypnotic"]},
+        { id: '29', idSong: 29, name: 'Exercises in Futility V', artist: 'Mgla', genre: "Black Metal", tags: ["dark", "heavy", "aggressive", "winter", "atmospheric"]},
+        { id: '30', idSong: 30, name: 'A Fine Day to Die', artist: 'Bathory', genre: "Black Metal", tags: ["aggressive", "heavy", "dark", "pagan"]},
+    ];
+
+    //userHistory=this.recommendations.getUserHistory();
+    //allSongs=this.songs.getAllSongs();
+
+    //userId=this.recommendations.getUserId;
+    userId='user1';
+
+    userHistory= [
+        { id: '26', idSong: 26, name: 'Neither Meaning nor Justice', artist: 'Deathspell Omega', genre: "Black Metal", tags: ["dark", "heavy", "chaotic", "concept", "hypnotic"]},
+        { id: '27', idSong: 27, name: 'Chorea Macchabeorum', artist: 'Blut aus Nord', genre: "Black Metal", tags: ["dark", "heavy", "aggressive", "winter", "atmospheric"]},
+        { id: '28', idSong: 28, name: 'Maze of Phobetor', artist: 'Akhlys', genre: "Black Metal", tags: ["dark", "heavy", "chaotic", "concept", "hypnotic"]},
+        { id: '29', idSong: 29, name: 'Exercises in Futility V', artist: 'Mgla', genre: "Black Metal", tags: ["dark", "heavy", "aggressive", "winter", "atmospheric"]},
+        { id: '30', idSong: 30, name: 'A Fine Day to Die', artist: 'Bathory', genre: "Black Metal", tags: ["aggressive", "heavy", "dark", "pagan"]},
+    ]; //RESEE THIS
+
+    recPlay=this.filterSongsByGenreAndTags(this.userHistory, this.allSongs)
+    recPlayExpanded=this.getFilteredSongs(this.userId, this.userHistory, this.allSongs)
+    recPlayExpandDouble=this.get15Recommendations(this.userId, this.userHistory, this.allSongs)
 
     // Method to generate recommended songs based on user's listening history
     //async generateRecommendations(userId: string, userHistory: SongEntity[]): Promise<PlaylistEntity | string> {
@@ -96,7 +145,55 @@ return new PlaylistEntity({
                 filteredSongs.push(song);
             }
         }
-        return filteredSongs;
+        return filteredSongs.slice(0, 5);
+    }
+
+    async getFilteredSongs(userId: string, userHistory: SongEntity[], allSongs: SongEntity[]): Promise<SongEntity[] | string> {
+        try {
+            if (!userHistory || userHistory.length < 5) {
+                return "You didn't listen to enough songs to be recommended new ones.";
+            }
+
+            const allSongs = await this.songs.getAllSongs();
+
+            const filteredSongs = await this.filterSongsByGenreAndTags(userHistory, allSongs);
+
+            const recommendedSongs = filteredSongs.slice(0, 10); // Get first 15 songs
+
+            const existingRecommendation = await this.recommendations.getRecommendationByUserId(userId);
+            if (existingRecommendation) {
+                await this.recommendations.updateRecommendationByUserId(existingRecommendation, userId);
+            }
+
+            return recommendedSongs;
+        } catch (error) {
+            console.error("Error in getFilteredSongs:", error);
+            return 'An error occurred while processing your request.';
+        }
+    }
+
+    async get15Recommendations(userId: string, userHistory: SongEntity[], allSongs: SongEntity[]): Promise<SongEntity[] | string> {
+        try {
+            if (!userHistory || userHistory.length < 5) {
+                return "You didn't listen to enough songs to be recommended new ones.";
+            }
+
+            const allSongs = await this.songs.getAllSongs();
+
+            const filteredSongs = await this.filterSongsByGenreAndTags(userHistory, allSongs);
+
+            const recommendedSongs = filteredSongs.slice(10, 15); // Recommend next 5 songs
+
+            const existingRecommendation = await this.recommendations.getRecommendationByUserId(userId);
+            if (existingRecommendation) {
+                await this.recommendations.updateRecommendationByUserId(existingRecommendation, userId);
+            }
+
+            return recommendedSongs;
+        } catch (error) {
+            console.error("Error in getMoreRecommendations:", error);
+            return 'An error occurred while processing your request.';
+        }
     }
 
     //async getMoreRecommendations(userId: string, userHistory: SongEntity []): Promise<PlaylistEntity | string> {
